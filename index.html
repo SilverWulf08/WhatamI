@@ -391,14 +391,15 @@
 
 			const app = document.querySelector("#app");
 			const themeButton = document.querySelector("#theme-toggle");
+			const themeStorageKey = "what-am-i-theme-v2";
 			let run = null;
 			const savedTheme = (() => {
 				try {
-					const theme = localStorage.getItem("what-am-i-theme");
+					const theme = localStorage.getItem(themeStorageKey);
 					return theme === "dark" || theme === "light" ? theme : null;
 				} catch { return null; }
 			})();
-			let currentTheme = savedTheme || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+			let currentTheme = savedTheme || "light";
 			const setTheme = (theme, persist = true) => {
 				currentTheme = theme;
 				const isDark = theme === "dark";
@@ -408,7 +409,7 @@
 				themeButton.setAttribute("aria-label", `Switch to ${isDark ? "light" : "dark"} mode`);
 				themeButton.innerHTML = `<span class="theme-icon" aria-hidden="true">${isDark ? "☀" : "☾"}</span><span>${isDark ? "Light mode" : "Dark mode"}</span>`;
 				if (persist) {
-					try { localStorage.setItem("what-am-i-theme", theme); } catch {}
+					try { localStorage.setItem(themeStorageKey, theme); } catch {}
 				}
 			};
 			themeButton.addEventListener("click", () => setTheme(currentTheme === "dark" ? "light" : "dark"));
