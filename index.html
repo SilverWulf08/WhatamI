@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#e8f3ed">
+	<title>What am I? Quiz</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght,SOFT,WONK@9..144,600,20,1;9..144,700,20,1&display=swap" rel="stylesheet">
+	<style>
+		:root {
+			color-scheme: light;
+			--ink: #1a2922;
+			--muted: #69766e;
+			--paper: #fffdf7;
+			--canvas: #e8f3ed;
+			--blue: #345fdb;
+			--blue-dark: #2547ad;
+			--button-bg: #345fdb;
+			--button-hover: #284fc1;
+			--button-shadow: #2547ad;
+			--coral: #ee745e;
+			--yellow: #f4c95d;
+			--line: #dce5dd;
+			--pattern: #aacbb7;
+			--panel-border: #d5e4d9;
+			--shadow: rgba(43, 87, 59, .08);
+			--orbit-line: #bed4c4;
+			--sample-paper: #fffaf0;
+			--sample-border: #e7e4d8;
+			--sample-shadow: #e6eddf;
+			--subtle: #87918a;
+			--footer-ink: #77867c;
+			--progress-track: #d2e3d7;
+			--answer-paper: #fff;
+			--answer-hover: #f7fbf7;
+			--answer-selected: #eef2ff;
+			--answer-key-border: #dbe3dc;
+			--answer-key-ink: #748078;
+			--answer-hover-border: #91b6a0;
+			--keyboard-ink: #88938b;
+			--trait-label: #536158;
+			--trait-track: #e8eee8;
+			--trait-value: #869088;
+			--result-art: #f8e6d9;
+			--result-pattern: #e9bba9;
+			--result-ring: rgba(210, 128, 99, .32);
+			--secondary-border: #b8cbbd;
+			--secondary-hover: #f8fbf6;
+			--serif: "Fraunces", Georgia, serif;
+			--sans: "DM Sans", "Segoe UI", sans-serif;
+		}
+		:root[data-theme="dark"] {
+			color-scheme: dark;
+			--ink: #f1efec;
+			--muted: #c0bbb4;
+			--paper: #282725;
+			--canvas: #191817;
+			--blue: #8ba6ff;
+			--blue-dark: #3b559d;
+			--button-bg: #465eae;
+			--button-hover: #526bc2;
+			--button-shadow: #304589;
+			--coral: #ff9279;
+			--yellow: #f8d477;
+			--line: #494642;
+			--pattern: #292725;
+			--panel-border: #403d39;
+			--shadow: rgba(0, 0, 0, .2);
+			--orbit-line: #514d48;
+			--sample-paper: #2b2927;
+			--sample-border: #4a4641;
+			--sample-shadow: #141312;
+			--subtle: #aaa49c;
+			--footer-ink: #aaa49c;
+			--progress-track: #3c3935;
+			--answer-paper: #2d2b29;
+			--answer-hover: #373430;
+			--answer-selected: #34364a;
+			--answer-key-border: #56514b;
+			--answer-key-ink: #d0cbc4;
+			--answer-hover-border: #7b7165;
+			--keyboard-ink: #aaa49c;
+			--trait-label: #ddd8d1;
+			--trait-track: #413e3a;
+			--trait-value: #b6b0a8;
+			--result-art: #392d28;
+			--result-pattern: #64483b;
+			--result-ring: rgba(255, 167, 130, .3);
+			--secondary-border: #605950;
+			--secondary-hover: #36322e;
+		}
+		* { box-sizing: border-box; }
+		body {
+			min-width: 320px;
+			min-height: 100vh;
+			margin: 0;
+			color: var(--ink);
+			background-color: var(--canvas);
+			background-image: radial-gradient(var(--pattern) 0.75px, transparent 0.75px);
+			background-size: 19px 19px;
+			font-family: var(--sans);
+			transition: background-color .25s ease, color .25s ease;
+		}
+		button { font: inherit; }
+		button:focus-visible { outline: 3px solid var(--coral); outline-offset: 4px; }
+		.page { min-height: 100vh; display: flex; flex-direction: column; padding: 26px 34px 20px; }
+		.topbar, .footbar { width: min(100%, 1120px); margin-inline: auto; display: flex; align-items: center; justify-content: space-between; }
+		.footbar { justify-content: center; }
+		.header-actions { display: flex; align-items: center; gap: 18px; }
+		.theme-toggle { display: inline-flex; min-height: 36px; align-items: center; gap: 8px; padding: 0 11px; border: 1px solid var(--line); border-radius: 4px; color: var(--ink); background: var(--paper); cursor: pointer; font-size: 12px; font-weight: 700; transition: background .2s ease, border-color .2s ease, color .2s ease; }
+		.theme-toggle:hover { border-color: var(--blue); }
+		.theme-icon { color: var(--blue); font-size: 17px; line-height: 1; }
+		.brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font-size: 14px; font-weight: 700; letter-spacing: .02em; }
+		.brand-mark { display: grid; width: 31px; height: 31px; place-items: center; border: 1px solid var(--ink); border-radius: 50% 50% 46% 54%; font-family: var(--serif); font-size: 20px; transform: rotate(-9deg); }
+		.top-note { color: var(--muted); font-size: 12px; font-weight: 600; }
+		main { width: min(100%, 1120px); flex: 1; margin: 20px auto 28px; display: grid; place-items: center; }
+		.screen { width: 100%; animation: arrive .45s cubic-bezier(.2,.8,.2,1) both; }
+		@keyframes arrive { from { opacity: 0; transform: translateY(13px); } to { opacity: 1; transform: translateY(0); } }
+		.home { min-height: min(690px, 76vh); display: grid; grid-template-columns: 1.15fr .85fr; align-items: center; gap: 48px; padding: 50px 6.2%; border: 1px solid var(--panel-border); border-radius: 8px; background: var(--paper); box-shadow: 0 9px 0 var(--shadow); overflow: hidden; }
+		.eyebrow { display: inline-flex; align-items: center; gap: 9px; color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+		.eyebrow::before { width: 8px; height: 8px; border-radius: 50%; background: var(--coral); content: ""; }
+		h1, h2, p { margin-top: 0; }
+		.home h1 { max-width: 540px; margin: 20px 0 18px; font: 600 clamp(60px, 8vw, 104px)/.91 var(--serif); letter-spacing: -.045em; }
+		.home h1 span { display: block; color: var(--blue); font-style: italic; }
+		.intro { max-width: 410px; margin-bottom: 28px; color: var(--muted); font-size: 16px; line-height: 1.75; }
+		.primary, .secondary { display: inline-flex; min-height: 52px; align-items: center; justify-content: center; gap: 14px; padding: 0 21px; border: 0; border-radius: 4px; cursor: pointer; font-weight: 700; transition: transform .2s ease, background .2s ease, box-shadow .2s ease; }
+		.primary { color: white; background: var(--button-bg); box-shadow: 0 4px 0 var(--button-shadow); }
+		.primary:hover { transform: translateY(-2px); background: var(--button-hover); box-shadow: 0 6px 0 var(--button-shadow); }
+		.primary:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--button-shadow); }
+		.primary .arrow { font-size: 20px; font-weight: 400; }
+		.small-note { margin: 20px 0 0; color: var(--subtle); font-size: 12px; }
+		.playground { position: relative; min-height: 350px; display: grid; place-items: center; }
+		.orbit { position: absolute; width: min(100%, 355px); aspect-ratio: 1; border: 1px dashed var(--orbit-line); border-radius: 50%; animation: turn 45s linear infinite; }
+		@keyframes turn { to { transform: rotate(1turn); } }
+		.orbit::before, .orbit::after { position: absolute; width: 13px; height: 13px; border-radius: 50%; content: ""; }
+		.orbit::before { top: 25px; left: 47px; background: var(--coral); }
+		.orbit::after { right: 15px; bottom: 86px; width: 9px; height: 9px; background: var(--blue); }
+		.sample { position: relative; z-index: 1; width: min(100%, 290px); padding: 27px 26px 25px; border: 1px solid var(--sample-border); border-radius: 5px; background: var(--sample-paper); box-shadow: 5px 7px 0 var(--sample-shadow); transform: rotate(3deg); animation: float 4.5s ease-in-out infinite; }
+		@keyframes float { 50% { transform: rotate(1deg) translateY(-7px); } }
+		.sample-kicker { color: var(--coral); font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+		.sample-emoji { display: block; margin: 17px 0 9px; font-size: 48px; }
+		.sample h2 { margin-bottom: 8px; font: 600 26px/1.15 var(--serif); }
+		.sample p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
+		.spark { position: absolute; top: 25px; right: 9%; color: var(--yellow); font-size: 37px; animation: bob 3s ease-in-out infinite; }
+		.spark-two { position: absolute; bottom: 28px; left: 4%; color: var(--coral); font-size: 30px; animation: bob 3.8s ease-in-out infinite reverse; }
+		@keyframes bob { 50% { transform: translateY(-9px) rotate(12deg); } }
+		.footbar { color: var(--footer-ink); font-size: 11px; }
+		.quiz-shell { width: min(100%, 760px); margin: 0 auto; }
+		.quiz-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 23px; }
+		.question-count { color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+		.question-count strong { color: var(--ink); }
+		.text-button { padding: 8px 0 8px 8px; border: 0; color: var(--muted); background: transparent; cursor: pointer; font-size: 12px; font-weight: 700; }
+		.text-button:hover { color: var(--blue); }
+		.progress-track { height: 5px; margin-bottom: 37px; overflow: hidden; border-radius: 4px; background: var(--progress-track); }
+		.progress-fill { width: 5%; height: 100%; border-radius: inherit; background: var(--coral); transition: width .35s ease; }
+		.question-card { padding: clamp(26px, 5vw, 47px); border: 1px solid var(--line); border-radius: 7px; background: var(--paper); box-shadow: 0 7px 0 var(--shadow); }
+		.question-card .eyebrow { margin-bottom: 13px; }
+		.question-title { max-width: 620px; min-height: 2.1em; margin: 0 0 26px; font: 600 clamp(27px, 4.2vw, 40px)/1.13 var(--serif); letter-spacing: -.025em; }
+		.answers { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
+		.answer { display: flex; min-height: 66px; align-items: center; gap: 13px; padding: 12px 15px; border: 1px solid var(--line); border-radius: 4px; color: var(--ink); background: var(--answer-paper); cursor: pointer; text-align: left; font-size: 14px; line-height: 1.45; transition: border-color .18s ease, background .18s ease, transform .18s ease; }
+		.answer:hover { transform: translateY(-2px); border-color: var(--answer-hover-border); background: var(--answer-hover); }
+		.answer.selected { border-color: var(--blue); background: var(--answer-selected); box-shadow: inset 0 0 0 1px var(--blue); }
+		.answer-key { display: grid; width: 26px; height: 26px; flex: 0 0 26px; place-items: center; border: 1px solid var(--answer-key-border); border-radius: 50%; color: var(--answer-key-ink); font-size: 11px; font-weight: 700; }
+		.answer.selected .answer-key { border-color: var(--blue); color: white; background: var(--blue); }
+		.question-actions { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 23px; }
+		.question-actions .primary { min-height: 46px; padding-inline: 18px; font-size: 13px; }
+		.question-actions .primary:disabled { cursor: not-allowed; opacity: .42; transform: none; box-shadow: 0 4px 0 var(--button-shadow); }
+		.keyboard-hint { color: var(--keyboard-ink); font-size: 11px; }
+		.result-wrap { width: min(100%, 850px); margin: 0 auto; }
+		.result-heading { margin: 0 0 17px; text-align: center; }
+		.result-heading .eyebrow { justify-content: center; }
+		.result-heading h1 { margin: 13px 0 0; font: 600 clamp(35px, 6vw, 58px)/1.05 var(--serif); letter-spacing: -.035em; }
+		.result-card { display: grid; grid-template-columns: .82fr 1.18fr; overflow: hidden; border: 1px solid var(--line); border-radius: 7px; background: var(--paper); box-shadow: 0 7px 0 var(--shadow); }
+		.result-art { position: relative; display: grid; min-height: 350px; place-items: center; overflow: hidden; background-color: var(--result-art); background-image: radial-gradient(var(--result-pattern) .8px, transparent .8px); background-size: 16px 16px; }
+		.result-art::before, .result-art::after { position: absolute; width: 190px; height: 190px; border: 1px solid var(--result-ring); border-radius: 50%; content: ""; }
+		.result-art::after { width: 240px; height: 240px; }
+		.result-emoji { position: relative; z-index: 1; font-size: 104px; filter: drop-shadow(0 9px 1px rgba(90, 53, 35, .12)); animation: reveal .7s cubic-bezier(.2,.8,.2,1) both, bob 3.7s ease-in-out .7s infinite; }
+		@keyframes reveal { from { opacity: 0; transform: scale(.65) rotate(-13deg); } to { opacity: 1; transform: scale(1) rotate(0); } }
+		.result-copy { padding: clamp(25px, 5vw, 42px); }
+		.result-type { color: var(--coral); font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+		.result-name { margin: 10px 0 13px; font: 600 clamp(30px, 4vw, 43px)/1.05 var(--serif); letter-spacing: -.025em; }
+		.result-description { margin-bottom: 23px; color: var(--muted); font-size: 14px; line-height: 1.75; }
+		.traits { display: grid; gap: 11px; }
+		.trait { display: grid; grid-template-columns: 93px 1fr 27px; align-items: center; gap: 10px; font-size: 11px; }
+		.trait-label { color: var(--trait-label); font-weight: 600; }
+		.trait-track { height: 6px; overflow: hidden; border-radius: 9px; background: var(--trait-track); }
+		.trait-fill { height: 100%; border-radius: inherit; background: var(--blue); transform-origin: left; animation: fill-in .75s ease both; }
+		@keyframes fill-in { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+		.trait-value { color: var(--trait-value); text-align: right; }
+		.result-footer { display: flex; justify-content: center; margin-top: 24px; }
+		.secondary { min-height: 48px; border: 1px solid var(--secondary-border); color: var(--ink); background: var(--paper); font-size: 13px; }
+		.secondary:hover { transform: translateY(-2px); background: var(--secondary-hover); }
+		.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+		@media (max-width: 700px) {
+			.page { padding: 19px 17px 15px; }
+			main { margin-block: 16px 22px; }
+			.home { min-height: auto; grid-template-columns: 1fr; gap: 10px; padding: 38px 26px 25px; }
+			.home h1 { font-size: clamp(65px, 15vw, 91px); }
+			.intro { font-size: 14px; }
+			.playground { min-height: 245px; }
+			.orbit { width: min(100%, 260px); }
+			.orbit::after { right: -2px; bottom: calc(50% - 4px); }
+			.sample { width: 235px; padding: 18px 20px; }
+			.sample-emoji { margin: 10px 0 5px; font-size: 37px; }
+			.sample h2 { font-size: 22px; }
+			.playground { min-height: 290px; }
+			.spark { z-index: 2; top: 0; right: 5%; font-size: 30px; }
+			.spark-two { z-index: 2; bottom: 0; left: 5%; font-size: 26px; }
+			.question-card { padding: 25px 19px; }
+			.progress-track { margin-bottom: 24px; }
+			.answers { grid-template-columns: 1fr; gap: 8px; }
+			.answer { min-height: 55px; }
+			.result-card { grid-template-columns: 1fr; }
+			.result-art { min-height: 205px; }
+			.result-emoji { font-size: 77px; }
+			.result-art::before { width: 150px; height: 150px; }
+			.result-art::after { width: 190px; height: 190px; }
+			.result-heading h1 { font-size: 39px; }
+			.result-copy { padding: 25px 22px; }
+		}
+		@media (max-width: 380px) {
+			.page { padding-inline: 12px; }
+			.home { padding-inline: 20px; }
+			.keyboard-hint { display: none; }
+			.trait { grid-template-columns: 82px 1fr 25px; }
+		}
+		@media (max-width: 540px) {
+			.top-note { display: none; }
+		}
+		@media (prefers-reduced-motion: reduce) {
+			*, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+		}
+	</style>
+</head>
+<body>
+	<div class="page">
+		<header class="topbar">
+			<a class="brand" href="#home" aria-label="What am I? home"><span class="brand-mark" aria-hidden="true">?</span><span>What am I? Quiz</span></a>
+			<div class="header-actions"><span class="top-note">A tiny quiz for your big weird self</span><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false"><span class="theme-icon" aria-hidden="true">☾</span><span>Dark mode</span></button></div>
+		</header>
+		<main id="app" aria-live="polite"></main>
+		<footer class="footbar"><span>Made with ❤️ by Jorik</span></footer>
+	</div>
+	<script>
+		(() => {
+			const traits = ["wonder", "kindness", "nerve", "calm", "spark", "freedom", "focus", "mischief"];
+			const QUIZ_QUESTION_COUNT = 15;
+			const questions = [
+				["A free afternoon appears out of nowhere. You…", [["Follow a tiny curiosity down a rabbit hole", "wonder", "focus"], ["Gather your favorite people", "kindness", "spark"], ["Go somewhere you have never been", "nerve", "freedom"], ["Make a snack and let the day happen", "calm", "mischief"]]],
+				["A friend says, ‘I have a strange idea.’ Your first thought?", [["Tell me every detail", "wonder", "spark"], ["I'm in. What's the plan?", "nerve", "freedom"], ["Does it need snacks?", "kindness", "mischief"], ["Let's make it work, gently", "calm", "focus"]]],
+				["Pick a little treat for a long day.", [["A new book or tiny fact", "wonder", "focus"], ["A long, unhurried chat", "kindness", "calm"], ["Something fizzy and unexpected", "spark", "mischief"], ["A walk with no particular plan", "nerve", "freedom"]]],
+				["When plans go a bit sideways, you tend to…", [["Find the interesting part", "wonder", "calm"], ["Keep everyone feeling okay", "kindness", "focus"], ["Make an entirely new plan", "nerve", "spark"], ["Declare it an adventure", "freedom", "mischief"]]],
+				["Your ideal imaginary home has…", [["A secret room full of odd things", "wonder", "mischief"], ["A big table with extra chairs", "kindness", "spark"], ["A door that opens somewhere new", "nerve", "freedom"], ["A sunny window and a soft blanket", "calm", "focus"]]],
+				["Someone gives you a mysterious little key. You…", [["Try it on every door", "wonder", "nerve"], ["Ask who it belongs to", "kindness", "focus"], ["Keep it for a rainy-day quest", "freedom", "mischief"], ["Put it somewhere safe, then wonder", "calm", "spark"]]],
+				["At a party, where do you end up?", [["In a surprisingly deep conversation", "wonder", "kindness"], ["Starting a very silly game", "spark", "mischief"], ["On the porch looking at the sky", "calm", "freedom"], ["Meeting the person nobody knows yet", "nerve", "focus"]]],
+				["Your brain at bedtime is mostly…", [["One more question, actually", "wonder", "spark"], ["Replaying a kind moment", "kindness", "calm"], ["Planning tomorrow's little mission", "nerve", "focus"], ["A parade of unrelated nonsense", "freedom", "mischief"]]],
+				["Choose a weather forecast for your mood.", [["Bright clouds with secrets inside", "wonder", "calm"], ["Warm sun after a good talk", "kindness", "spark"], ["Wind that might take you places", "nerve", "freedom"], ["A brief, dramatic sprinkle", "focus", "mischief"]]],
+				["You find a creature in need of help. You…", [["Figure out what it needs", "wonder", "focus"], ["Make it feel safe first", "kindness", "calm"], ["Whisk it off to an adventure", "nerve", "spark"], ["Give it a very silly name", "freedom", "mischief"]]],
+				["Which compliment would secretly make your week?", [["You notice the best little things", "wonder", "kindness"], ["You make hard things feel possible", "nerve", "focus"], ["You bring such a good kind of chaos", "spark", "mischief"], ["You make people feel at home", "calm", "freedom"]]],
+				["A blank notebook is waiting. The first page gets…", [["A question you can't stop thinking about", "wonder", "focus"], ["A note to someone you love", "kindness", "calm"], ["A map to an imaginary place", "nerve", "freedom"], ["A doodle with googly eyes", "spark", "mischief"]]],
+				["Choose your very unofficial superpower.", [["Understand what plants are thinking", "wonder", "calm"], ["Make anyone feel included", "kindness", "spark"], ["Teleport to wherever the story is", "nerve", "freedom"], ["Make boring things a little ridiculous", "focus", "mischief"]]],
+				["When you really care about something, you…", [["Learn everything you can", "wonder", "focus"], ["Show up, again and again", "kindness", "calm"], ["Say so, even if your voice wobbles", "nerve", "spark"], ["Protect its right to be weird", "freedom", "mischief"]]],
+				["You have a whole day with no obligations. First move?", [["Wander through a museum or market", "wonder", "freedom"], ["Make a cozy meal for people", "kindness", "focus"], ["Sign up for the thing that scares you", "nerve", "spark"], ["Stay in pajamas and improvise", "calm", "mischief"]]],
+				["Pick the role you drift into on a group project.", [["The one with the clever connection", "wonder", "spark"], ["The one checking everyone is okay", "kindness", "calm"], ["The one who gets it started", "nerve", "focus"], ["The one who keeps it fun", "freedom", "mischief"]]],
+				["What is your relationship with rules?", [["I want to know why they exist", "wonder", "focus"], ["Good ones help everyone feel safe", "kindness", "calm"], ["I'll bend one if it blocks a good idea", "nerve", "freedom"], ["I have several harmless loopholes", "spark", "mischief"]]],
+				["A perfect little sound is…", [["Rain ticking on a window", "wonder", "calm"], ["Familiar laughter from another room", "kindness", "spark"], ["Footsteps headed somewhere new", "nerve", "freedom"], ["A squeaky toy at the wrong moment", "focus", "mischief"]]],
+				["How do you pick a favorite thing?", [["It has a story I want to uncover", "wonder", "focus"], ["It reminds me of someone", "kindness", "calm"], ["It makes me feel a bit braver", "nerve", "spark"], ["It is odd, and that is enough", "freedom", "mischief"]]],
+				["You get to add a new holiday. It celebrates…", [["Asking wonderfully pointless questions", "wonder", "mischief"], ["People who quietly show up", "kindness", "focus"], ["Trying something for the first time", "nerve", "freedom"], ["Doing absolutely nothing together", "calm", "spark"]]],
+				["Your ideal adventure has a little bit of…", [["A puzzle nobody asked you to solve", "wonder", "focus"], ["A companion who gets your jokes", "kindness", "mischief"], ["A moment where you surprise yourself", "nerve", "spark"], ["A scenic route and nowhere to be", "calm", "freedom"]]],
+				["When someone new joins the room, you…", [["Wonder what brought them here", "wonder", "focus"], ["Make room beside you", "kindness", "calm"], ["Introduce yourself before you overthink it", "nerve", "spark"], ["Offer them the inside joke's backstory", "freedom", "mischief"]]],
+				["Choose your preferred kind of magic.", [["Find hidden doors in familiar places", "wonder", "freedom"], ["Mend a bad day with one small gesture", "kindness", "calm"], ["Borrow courage from your future self", "nerve", "focus"], ["Make the moon pull a funny face", "spark", "mischief"]]],
+				["A small problem lands in your lap. You…", [["Look for the detail everyone missed", "wonder", "focus"], ["Ask who needs a hand", "kindness", "spark"], ["Take the first useful step", "nerve", "calm"], ["Try a completely sideways solution", "freedom", "mischief"]]],
+				["What's the best souvenir from a day out?", [["A new fact to tell someone", "wonder", "focus"], ["A photo with your favorite people", "kindness", "spark"], ["A story that starts with ‘so, anyway…’", "nerve", "mischief"], ["A quiet memory that's just yours", "calm", "freedom"]]],
+				["If your energy were a tiny shop, it would sell…", [["Curiosities and pocket-sized maps", "wonder", "freedom"], ["Tea, postcards, and spare time", "kindness", "calm"], ["Confetti and first-day jitters", "nerve", "spark"], ["Practical things with silly names", "focus", "mischief"]]],
+				["How do you feel about being the center of attention?", [["Only if I can tell a good story", "wonder", "spark"], ["I'd rather shine a light on someone else", "kindness", "calm"], ["A little nerve makes it interesting", "nerve", "freedom"], ["I can commit to a very dumb bit", "focus", "mischief"]]],
+				["Pick a tiny goal for the next month.", [["Learn something oddly specific", "wonder", "focus"], ["Be more deliberate about checking in", "kindness", "calm"], ["Do one thing before I'm fully ready", "nerve", "spark"], ["Leave more room for delightful detours", "freedom", "mischief"]]],
+				["What do you do with an awkward silence?", [["Ask a question nobody expected", "wonder", "spark"], ["Let it be comfortable", "kindness", "calm"], ["Say the honest thing", "nerve", "focus"], ["Make an extremely specific sound effect", "freedom", "mischief"]]],
+				["Pick a made-up award you might win.", [["Most Likely to Notice the Moon", "wonder", "calm"], ["Best Emergency Pep Talk", "kindness", "spark"], ["First to Volunteer for the Weird Thing", "nerve", "freedom"], ["Most Creative Use of a Snack", "focus", "mischief"]]],
+				["Your favorite kind of surprise is…", [["A clue that makes everything click", "wonder", "focus"], ["Someone remembered a small detail", "kindness", "calm"], ["A chance to do the bold thing", "nerve", "spark"], ["A ridiculous gift with a backstory", "freedom", "mischief"]]],
+				["Choose your unofficial life motto.", [["There is probably more to the story", "wonder", "freedom"], ["Be gentle; everyone is figuring it out", "kindness", "calm"], ["Nervous counts as going anyway", "nerve", "focus"], ["A little nonsense is good for you", "spark", "mischief"]]],
+				["In a new place, your eyes go first to…", [["The tiny details and odd signs", "wonder", "focus"], ["Where everyone seems comfortable", "kindness", "calm"], ["The road or doorway out there", "nerve", "freedom"], ["Anything that could become a joke", "spark", "mischief"]]],
+				["What kind of story do you want to live in?", [["A mystery with a kind answer", "wonder", "kindness"], ["A found-family story with snacks", "calm", "spark"], ["A quest with a very brave middle", "nerve", "focus"], ["A comedy with improbable detours", "freedom", "mischief"]]],
+				["A day feels like yours when…", [["You learned or noticed something new", "wonder", "focus"], ["Somebody felt a little less alone", "kindness", "calm"], ["You did a thing that took nerve", "nerve", "freedom"], ["You laughed at something absurd", "spark", "mischief"]]],
+				["Pick your favorite kind of mess.", [["A desk covered in open books", "wonder", "focus"], ["A kitchen after everyone ate", "kindness", "spark"], ["A bag packed for an impulsive trip", "nerve", "freedom"], ["A craft project with googly eyes", "calm", "mischief"]]],
+				["When you don't know what to do next, you…", [["Follow the question that feels alive", "wonder", "nerve"], ["Talk it through with someone safe", "kindness", "focus"], ["Take one small, real step", "calm", "spark"], ["Wait for a new option to wander in", "freedom", "mischief"]]],
+				["Which tiny victory feels most satisfying?", [["Finally understanding a tricky thing", "wonder", "focus"], ["Making someone feel genuinely seen", "kindness", "calm"], ["Doing the thing you almost put off", "nerve", "spark"], ["Getting away with a harmless prank", "freedom", "mischief"]]],
+				["Your personal soundtrack needs…", [["A curious little melody", "wonder", "calm"], ["A chorus everyone can sing", "kindness", "spark"], ["A beat for walking into the unknown", "nerve", "focus"], ["One extremely unexpected kazoo", "freedom", "mischief"]]],
+				["Choose what you would keep in a tiny jar.", [["A question mark from a good day", "wonder", "focus"], ["A note someone wrote for you", "kindness", "calm"], ["A ticket from a brave decision", "nerve", "freedom"], ["A button that looks a bit suspicious", "spark", "mischief"]]],
+				["Someone says ‘trust your gut.’ Yours says…", [["Wait, let's look at this more closely", "wonder", "focus"], ["Check whether everyone's okay", "kindness", "calm"], ["Well, we won't know until we try", "nerve", "spark"], ["It would be funnier the other way", "freedom", "mischief"]]],
+				["Pick a way to make an ordinary Tuesday better.", [["Read one more page about the thing", "wonder", "focus"], ["Send an ‘I thought of you’ message", "kindness", "spark"], ["Take the scenic way home", "nerve", "freedom"], ["Give an object a dramatic backstory", "calm", "mischief"]]],
+				["What would your friends trust you with?", [["Finding the interesting answer", "wonder", "focus"], ["Being there when it matters", "kindness", "calm"], ["Starting something a little daunting", "nerve", "spark"], ["Making a dull moment memorable", "freedom", "mischief"]]],
+				["A little sign points toward ‘elsewhere.’ You…", [["Ask what ‘elsewhere’ means", "wonder", "nerve"], ["Check whether a friend wants to come", "kindness", "freedom"], ["Go see, with sensible shoes", "focus", "spark"], ["Give the sign a thumbs-up first", "calm", "mischief"]]],
+				["Choose a very small thing to be proud of.", [["I stay curious even when I'm tired", "wonder", "calm"], ["I care, and I let it show", "kindness", "spark"], ["I keep going while a bit scared", "nerve", "focus"], ["I make room for being delightfully odd", "freedom", "mischief"]]],
+				["Your perfect ending to an ordinary day?", [["One last thought to take to bed", "wonder", "focus"], ["A goodnight from someone you love", "kindness", "calm"], ["The feeling you made a little progress", "nerve", "spark"], ["A laugh about something deeply silly", "freedom", "mischief"]]],
+				["You stumble on a tiny free library. You…", [["Leave a note about your favorite page", "wonder", "kindness"], ["Take the book with the strangest title", "wonder", "mischief"], ["Leave a book someone might need", "kindness", "calm"], ["Follow the handwritten map inside one", "nerve", "freedom"]]],
+				["A paper airplane lands at your feet. You…", [["Check for a message before unfolding it", "wonder", "focus"], ["Fold one back and send it somewhere", "spark", "mischief"], ["Ask around to find its pilot", "kindness", "nerve"], ["See how far it can fly from the roof", "freedom", "nerve"]]],
+				["Pick an unlikely sidekick for your next errand.", [["A very confident pigeon", "nerve", "mischief"], ["A pocket notebook full of clues", "wonder", "focus"], ["A friend who remembers everyone's order", "kindness", "calm"], ["A tiny scooter with one squeaky wheel", "spark", "freedom"]]],
+				["Your ideal museum exhibit is…", [["A room of inventions that almost worked", "wonder", "mischief"], ["A collection of letters between friends", "kindness", "focus"], ["A planetarium with a dramatic narrator", "wonder", "spark"], ["A hands-on maze with no marked exit", "nerve", "freedom"]]],
+				["A neighbor leaves a mysterious parcel at your door. You…", [["Inspect the wrapping for clues", "wonder", "focus"], ["Bring it over and ask how their day is", "kindness", "nerve"], ["Open it carefully, with a snack nearby", "calm", "mischief"], ["Guess what's inside with great confidence", "spark", "mischief"]]],
+				["Choose a very niche talent to master.", [["Remember every path you've ever walked", "wonder", "focus"], ["Make a perfect cup of tea for anyone", "kindness", "calm"], ["Talk to a room full of strangers", "nerve", "spark"], ["Make a convincing sound effect for any object", "freedom", "mischief"]]],
+				["The power goes out during a sleepover. You…", [["Tell a story that gets a little too spooky", "wonder", "mischief"], ["Check on everyone and find the candles", "kindness", "focus"], ["Go look at the stars from outside", "nerve", "freedom"], ["Start a shadow-puppet competition", "spark", "calm"]]],
+				["You get to rename one day of the week. It becomes…", [["Little Question Day", "wonder", "mischief"], ["Bring-a-Friend Day", "kindness", "spark"], ["Try-It-Anyway Day", "nerve", "focus"], ["Take-the-Long-Way Day", "calm", "freedom"]]],
+				["A cloud looks exactly like something. You…", [["Try to work out what the wind is doing", "wonder", "focus"], ["Point it out to whoever is nearby", "kindness", "spark"], ["Decide it is a dragon and make a quest", "nerve", "freedom"], ["Give it a silly name and move on", "calm", "mischief"]]],
+				["At the snack table, you gravitate toward…", [["The homemade thing with a story", "wonder", "kindness"], ["The odd flavor nobody has tried", "nerve", "mischief"], ["Whatever has enough to share", "kindness", "calm"], ["The snack shaped like a tiny hat", "spark", "freedom"]]],
+				["You find a button that says ‘probably fine.’ You…", [["Read the instructions on the back", "wonder", "focus"], ["Ask someone else to press it together", "kindness", "nerve"], ["Press it, but stand somewhere dramatic", "nerve", "spark"], ["Give a tiny speech before pressing it", "calm", "mischief"]]],
+				["What would you put in a time capsule for future you?", [["A question you still haven't answered", "wonder", "focus"], ["A note reminding you who showed up", "kindness", "calm"], ["A ticket from something you were nervous to try", "nerve", "freedom"], ["A drawing of yourself with enormous shoes", "spark", "mischief"]]],
+				["Pick a job for your imaginary tiny town.", [["Keeper of the town's very specific records", "wonder", "focus"], ["Host of the communal soup night", "kindness", "calm"], ["Official tester of secret tunnels", "nerve", "freedom"], ["Minister of Unnecessary Celebrations", "spark", "mischief"]]],
+				["A stranger asks you to settle a very silly debate. You…", [["Ask what the exact rules are", "wonder", "focus"], ["Make sure both sides feel heard", "kindness", "calm"], ["Offer a bold ruling and a rematch", "nerve", "spark"], ["Introduce a third, much sillier option", "freedom", "mischief"]]],
+				["Choose a door for a storybook hallway.", [["The one with a soft light underneath", "wonder", "calm"], ["The one with voices and clinking dishes", "kindness", "spark"], ["The one with muddy footprints leading out", "nerve", "freedom"], ["The tiny door with a suspicious knocker", "focus", "mischief"]]],
+				["Your favorite kind of surprise party is…", [["A surprise visit from someone you miss", "kindness", "calm"], ["A party where nobody knows the theme", "wonder", "mischief"], ["A last-minute trip somewhere new", "nerve", "freedom"], ["A very serious party for a household object", "spark", "mischief"]]],
+				["You are handed a map with one corner missing. You…", [["Try to infer what the missing bit said", "wonder", "focus"], ["Ask who drew it and why", "kindness", "wonder"], ["Head toward the most interesting landmark", "nerve", "freedom"], ["Draw a ridiculous monster in the blank space", "spark", "mischief"]]],
+				["What would your personal parade celebrate?", [["A curious thought that turned out useful", "wonder", "focus"], ["Someone making room for someone else", "kindness", "calm"], ["Doing the scary thing in sensible shoes", "nerve", "spark"], ["Finding a shortcut that is somehow longer", "freedom", "mischief"]]],
+				["A small animal has chosen to follow you. You…", [["Wonder where it thinks it is going", "wonder", "mischief"], ["Find out if it needs help getting home", "kindness", "focus"], ["Offer it a safe place to rest", "kindness", "calm"], ["Let it lead you somewhere unexpected", "nerve", "freedom"]]],
+				["Pick a sound to put in a magical snow globe.", [["The first quiet moment after snowfall", "wonder", "calm"], ["A kitchen full of familiar voices", "kindness", "spark"], ["A train pulling out toward somewhere new", "nerve", "freedom"], ["A tiny, muffled ‘ta-da!’", "focus", "mischief"]]],
+				["Your imaginary island has one unusual landmark…", [["A library built inside a tree", "wonder", "calm"], ["A long table that seats the whole island", "kindness", "focus"], ["A lookout at the very highest point", "nerve", "freedom"], ["A statue of a very surprised potato", "spark", "mischief"]]],
+				["Which tiny inconvenience would you happily fix forever?", [["Labels that explain what they actually mean", "wonder", "focus"], ["Nobody having to eat lunch alone", "kindness", "calm"], ["Every closed path having a useful detour", "nerve", "freedom"], ["All spoons getting one day off per week", "spark", "mischief"]]],
+				["A friend asks you to help pick a new hobby. You suggest…", [["Identifying birds by their extremely specific calls", "wonder", "focus"], ["Cooking something together for neighbors", "kindness", "calm"], ["A beginner class that sounds a little intimidating", "nerve", "spark"], ["Making tiny hats for fruit", "freedom", "mischief"]]],
+				["You discover a staircase that goes down one extra step. You…", [["Count the steps and check again", "wonder", "focus"], ["Tell the caretaker before someone trips", "kindness", "calm"], ["Look underneath for a hidden room", "nerve", "freedom"], ["Name it the staircase's secret bonus step", "spark", "mischief"]]],
+				["Choose a pocket-sized companion for a long train ride.", [["A puzzle with one missing piece", "wonder", "focus"], ["A playlist made by someone you love", "kindness", "calm"], ["A notebook for plans at the next stop", "nerve", "freedom"], ["A tiny toy with an unnecessarily grand name", "spark", "mischief"]]],
+				["A recipe says ‘add a little joy.’ You…", [["Ask how joy is measured", "wonder", "focus"], ["Invite someone over to help cook", "kindness", "calm"], ["Add the ingredient you have never tried", "nerve", "freedom"], ["Make a trumpet noise and add extra sprinkles", "spark", "mischief"]]],
+				["You can keep one kind of place secret and safe. Which?", [["A clearing where the stars are easy to see", "wonder", "calm"], ["A bench where anyone can take a breath", "kindness", "focus"], ["A path that only brave feet have found", "nerve", "freedom"], ["A little room for extremely silly dancing", "spark", "mischief"]]],
+				["Someone gives you a blank badge. What does it say?", [["Ask Me About That Cloud", "wonder", "mischief"], ["You Can Sit With Us", "kindness", "calm"], ["Trying Counts", "nerve", "focus"], ["Officially Here For Snacks", "spark", "freedom"]]],
+				["What would you do with a spare hour in a new city?", [["Browse a shop that seems to sell everything", "wonder", "freedom"], ["Find a cozy spot and people-watch", "calm", "focus"], ["Ask a local for their favorite hidden place", "kindness", "nerve"], ["Follow the sound of an unexpected instrument", "spark", "mischief"]]],
+				["Which imaginary weather warning would you enjoy?", [["High chance of curious questions", "wonder", "spark"], ["Scattered acts of unexpected kindness", "kindness", "calm"], ["Brisk winds carrying you somewhere new", "nerve", "freedom"], ["A brief shower of harmless confetti", "focus", "mischief"]]],
+				["A tiny dragon sneezes glitter near you. You…", [["Study the glitter to see if it is different each time", "wonder", "focus"], ["Make sure the dragon isn't embarrassed", "kindness", "calm"], ["Ask if it wants to practice somewhere exciting", "nerve", "spark"], ["Sneeze glitter back, obviously", "freedom", "mischief"]]],
+				["Pick the most satisfying kind of discovery.", [["A pattern hiding in plain sight", "wonder", "focus"], ["A person who makes you feel understood", "kindness", "calm"], ["A place you didn't know you could reach", "nerve", "freedom"], ["A very good pun on a public sign", "spark", "mischief"]]],
+				["Your imaginary café has one house rule…", [["Questions are always welcome", "wonder", "kindness"], ["Nobody has to order quickly", "kindness", "calm"], ["At least one table is for spontaneous plans", "nerve", "spark"], ["All mugs get to have names", "focus", "mischief"]]],
+				["Which job would you give a friendly ghost?", [["Librarian for books people haven't written yet", "wonder", "focus"], ["Night-shift comfort provider", "kindness", "calm"], ["Guide to the other side of the hill", "nerve", "freedom"], ["Official sheet-polisher and joke tester", "spark", "mischief"]]],
+				["You find a jar labeled ‘open when ready.’ You…", [["Wonder who decided what ready means", "wonder", "focus"], ["Save it for a day you can share", "kindness", "calm"], ["Open it now and handle whatever happens", "nerve", "spark"], ["Give it a tiny pep talk first", "freedom", "mischief"]]],
+				["Choose a color for a thing that doesn't exist yet.", [["The color of a question almost answered", "wonder", "focus"], ["The color of being expected", "kindness", "calm"], ["The color of a brave first step", "nerve", "freedom"], ["The color of a joke you can't explain", "spark", "mischief"]]],
+				["What would you teach a passing comet about Earth?", [["How much there is to wonder about", "wonder", "spark"], ["How people take care of one another", "kindness", "calm"], ["How to pick a destination and go", "nerve", "freedom"], ["Why we give ordinary rocks funny names", "focus", "mischief"]]],
+				["A doorbell rings, but nobody is there. You…", [["Look for a note or clue nearby", "wonder", "focus"], ["Check whether a neighbor needs anything", "kindness", "calm"], ["Look down the street to see who ran off", "nerve", "freedom"], ["Leave a thank-you note for the mystery visitor", "spark", "mischief"]]],
+				["Pick a very small rebellion against a boring day.", [["Take a new route and notice everything", "wonder", "freedom"], ["Bring someone an unexpected treat", "kindness", "spark"], ["Ask the question everyone is avoiding", "nerve", "focus"], ["Wear two different socks on purpose", "calm", "mischief"]]],
+				["Which imaginary award would you put on your shelf?", [["Best Supporting Question", "wonder", "mischief"], ["Most Likely to Make Room", "kindness", "calm"], ["Bravest Debut at a New Thing", "nerve", "focus"], ["Outstanding Achievement in Side Quests", "spark", "freedom"]]],
+				["You can make one everyday object slightly magical. Which?", [["A notebook that remembers good questions", "wonder", "focus"], ["A kettle that knows when someone needs tea", "kindness", "calm"], ["Shoes that find the courage to go", "nerve", "freedom"], ["A spoon that conducts its own fanfare", "spark", "mischief"]]],
+				["At the end of a long walk, what feels best?", [["A view that makes you think", "wonder", "calm"], ["Getting back with everyone together", "kindness", "focus"], ["Realizing you went farther than expected", "nerve", "freedom"], ["Finding a snack you forgot you packed", "spark", "mischief"]]],
+				["A sleepy town asks you to invent one new tradition.", [["Everyone shares one thing they learned", "wonder", "focus"], ["Leave a porch light on for a neighbor", "kindness", "calm"], ["Take the town's oldest path somewhere new", "nerve", "freedom"], ["Give a trophy to the most dramatic vegetable", "spark", "mischief"]]]
+			];
+			const outcomes = [
+				["Moonlit otter", "🦦", "animal", "You move through life with playful curiosity and a soft spot for your people. You like finding the hidden fun in ordinary things, then inviting someone along for the discovery.", "45235414"],
+				["Pocket-sized dragon", "🐉", "creature", "A tender heart with a surprisingly brave streak. You protect what matters, collect curious little treasures, and can turn a small spark into an excellent adventure.", "34425323"],
+				["Curiosity moth", "🦋", "creature", "You are drawn to the little light at the edge of things: a question, a new room, a half-finished idea. Wonder is not a detour for you; it is the way in.", "54024231"],
+				["Garden fox", "🦊", "animal", "Quick-minded but never all sharp edges, you notice the mood of a place and know when to play along. You do your best thinking while wandering somewhere lovely.", "43334424"],
+				["Cloud shepherd", "🐑", "mythical being", "You have a gentle way of making a room feel less stormy. Patient and quietly imaginative, you make space for people to arrive exactly as they are.", "33354012"],
+				["Brave little comet", "☄️", "celestial event", "You do not need to feel fearless to move. A flicker of nerve and a vivid inner compass carry you toward the thing that might make your world a little bigger.", "34325233"],
+				["Pocket thunderstorm", "⛈️", "weather", "Your energy has a wonderful dramatic entrance. Under the bright sparks is someone who cares deeply, sees clearly, and knows a little change can wake everything up.", "33213345"],
+				["The midnight gardener", "🌱", "secret identity", "You tend to the things other people overlook. Quiet progress, strange little ideas, and steady care add up around you, often before anyone notices the garden is blooming.", "44244212"],
+				["Mischief pie", "🥧", "food", "A little sweetness, a little surprise, and just enough chaos to keep things interesting. You make people feel welcome without making life take itself too seriously.", "24324245"],
+				["Cinnamon-roll wizard", "🧙", "magical talent", "Your special magic is practical tenderness. You can take an overwhelming day, warm it up, and hand it back in smaller, kinder pieces.", "34254113"],
+				["Friendly lighthouse", "🗼", "thing", "Steady without being stiff, you help people find their bearings. There is warmth in your reliability, and more curiosity behind that calm glow than people might guess.", "33254022"],
+				["The yes-and sprite", "🧚", "magical being", "You are an expert at giving an idea one more chance to become delightful. Flexible, warm, and gloriously game, you make a good side quest feel inevitable.", "34324245"],
+				["Slightly haunted teapot", "🫖", "thing", "You are cozy, observant, and maybe harbor one or two extremely specific opinions. People relax around you, then realize the conversation has become surprisingly interesting.", "44253134"],
+				["Pocket-sized supernova", "🌟", "superpower", "Your brightness is not about taking up all the space. It is the ability to bring momentum, courage, and a contagious little ‘why not?’ to the people near you.", "34314344"],
+				["Daydreaming raccoon", "🦝", "animal", "Resourceful, curious, and fond of an unconventional solution, you can make something out of almost anything. Your mind is a friendly rummage drawer with excellent snacks.", "54313445"],
+				["The soft-launch hero", "🦸", "superpower", "You are not waiting for a dramatic soundtrack. You notice what needs doing, take one brave step, and make the people beside you feel more capable too.", "34354122"],
+				["Strawberry meteor", "🍓", "food", "A bright little collision of sweetness and nerve. You bring color to the expected path, make ordinary things memorable, and leave a trail of good stories.", "24323345"],
+				["Old-soul houseplant", "🪴", "thing", "You grow at your own pace and make the atmosphere around you gentler. Give you a little light, a bit of space, and a reason to be curious, and you'll thrive.", "44254111"],
+				["Unlicensed mapmaker", "🗺️", "calling", "You are good at finding routes nobody thought to draw. Your curiosity has direction, your courage has a pencil behind its ear, and there is always room for one more stop.", "54424421"],
+				["The giggle alchemist", "⚗️", "magical talent", "You turn awkwardness into a shared joke and a stuck moment into something that can move again. Your silliness is not an escape from caring; it is one of its languages.", "24314155"],
+				["Brave little dumpling", "🥟", "food", "Comforting from the outside, quietly determined at the center. You show up for your people, keep your shape when things get steamy, and deserve a little sauce on the side.", "23254232"],
+				["Library ghost (friendly)", "👻", "creature", "You drift toward stories, small details, and quiet corners with excellent atmosphere. A little mysterious, entirely kind, and always happy to point someone toward a good book.", "54354013"],
+				["The brave button", "🧷", "thing", "Small but structurally important: you keep things together, make a firm little choice, and help other people feel secure enough to take the next step.", "22255321"],
+				["Sunbeam with pockets", "🌞", "weather", "You carry warmth without needing a grand entrance. Your pockets are full of useful little things: encouragement, a snack, an unexpected fact, and room for somebody else.", "33235235"],
+				["A very wise frog", "🐸", "animal", "You have achieved the rare balance of noticing a lot and not panicking about all of it. Reflective, a touch odd, and always ready to hop toward a better pond.", "54344134"],
+				["The kindness loophole", "🗝️", "superpower", "Your power is finding a softer way through a hard rule. You care about people, but you are not afraid to get inventive when the official route leaves someone out.", "43234235"],
+				["Disco dandelion", "🌼", "plant", "Resilient, sociable, and a little bit impossible to keep down. You bring an unexpected party to places that forgot they could have one.", "34314255"],
+				["The curious kettle", "🫧", "thing", "You start with a thoughtful simmer and end up bubbling over with ideas. A patient listener with a quick bright edge, you make thinking out loud feel safe.", "54254123"],
+				["Side-quest sparrow", "🐦", "animal", "You are light on your feet and quick to spot an interesting opening. Friendly, independent, and never more than one shiny distraction away from a good story.", "54323435"],
+				["The human blanket fort", "🛖", "place", "You make a little shelter out of humor, comfort, and attention. Life feels less enormous around you, and people remember they can come out again when they are ready.", "23254134"],
+				["Pocket-sized inventor", "🛠️", "calling", "You see a problem and start rearranging the available bits. Practical focus meets mischievous imagination in your workshop, where ‘that might work’ is a legitimate blueprint.", "54223344"],
+				["A tiny ocean", "🌊", "element", "There is more going on under your calm surface than you let on. You are thoughtful, emotionally generous, and occasionally capable of a very surprising wave.", "44254024"],
+				["Tidepool librarian", "🐚", "calling", "You keep a quiet collection of fascinating details and make people feel welcome among them. Patient and curious, you know even the smallest shell can hold a whole story.", "54354132"],
+				["Toast cartographer", "🍞", "food", "You make a map out of whatever is nearby, then offer everyone a warm slice of the plan. Practical, generous, and sneakily adventurous, you rarely travel without a little butter.", "43224345"],
+				["A very small avalanche", "🏔️", "weather", "You start as one modest idea and gather delightful momentum. People underestimate the force of your enthusiasm until the whole day has been rearranged for the better.", "34313443"],
+				["Velvet astronaut", "👩‍🚀", "secret identity", "You can be both soft-hearted and space-bound. You bring care along for the unknown, collect bright new perspectives, and remember to wave back at home.", "45325322"],
+				["Mushroom with a day planner", "🍄", "plant", "A thoughtful little organizer of unexpected growth. You like a plan, but you leave a square open for wonder, weather, and any mushroom who needs directions.", "54254123"],
+				["Spare-key fairy", "🧚‍♀️", "magical being", "You notice who is standing outside and quietly help them find a way in. Generous and clever, you carry solutions that look suspiciously like tiny bits of magic.", "43354224"],
+				["Puddle detective", "🔎", "calling", "You can make an entire case from one odd footprint and a suspicious ripple. Observant, playful, and persistent, you investigate the mysteries other people walk right past.", "54313425"],
+				["Emotional-support volcano", "🌋", "element", "You feel things with impressive force, but your warmth is what people remember. You can turn a simmering feeling into a brave truth, then help everyone find a safe place to land.", "34354232"],
+				["Pocket ravioli oracle", "🥟", "food", "A compact package of comfort with an unexpectedly useful prediction or two. You listen carefully, offer something nourishing, and occasionally know exactly when the sauce is ready.", "34254135"],
+				["Hallway of detours", "🚪", "place", "There is always another door with you, especially when the obvious route feels dull. Curious and welcoming, you help people find a path that fits them better.", "54323432"],
+				["Moonbeam in sneakers", "🌙", "celestial event", "You have dreamy ideas and the practical shoes to go see where they lead. Calm but not stationary, you make wonder feel like somewhere a person can actually visit.", "54254321"],
+				["Excellent-excuse penguin", "🐧", "animal", "You are loyal, a bit theatrical, and very good at helping a friend leave a party early. Under the flippered nonsense is a steady companion who knows when enough is enough.", "34254234"],
+				["Accidental mayor", "🎖️", "secret identity", "You did not seek the clipboard; somehow everyone trusts you with it. You bring people together, make a fair little plan, and never forget to schedule an unnecessary parade.", "34354342"],
+				["Nap-time phoenix", "🔥", "mythical being", "You know that resting is part of rising again. Warm, resilient, and quietly determined, you return from a good nap with a fresh idea and slightly better snacks.", "24354233"],
+				["Friendly plot twist", "📖", "magical talent", "You know how to change the mood of a story without making anyone feel lost. Kind and inventive, you help a stuck moment discover a much more interesting next page.", "54334245"],
+				["Teacup of thunder", "☕", "weather", "You look like a calm little cup from the outside, but there is bright weather brewing within. Your ideas arrive with a rumble, a grin, and enough warmth to share.", "34354143"]
+			];
+
+			const app = document.querySelector("#app");
+			const themeButton = document.querySelector("#theme-toggle");
+			let run = null;
+			const savedTheme = (() => {
+				try {
+					const theme = localStorage.getItem("what-am-i-theme");
+					return theme === "dark" || theme === "light" ? theme : null;
+				} catch { return null; }
+			})();
+			let currentTheme = savedTheme || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+			const setTheme = (theme, persist = true) => {
+				currentTheme = theme;
+				const isDark = theme === "dark";
+				document.documentElement.dataset.theme = theme;
+				document.querySelector('meta[name="theme-color"]').content = isDark ? "#191817" : "#e8f3ed";
+				themeButton.setAttribute("aria-pressed", String(isDark));
+				themeButton.setAttribute("aria-label", `Switch to ${isDark ? "light" : "dark"} mode`);
+				themeButton.innerHTML = `<span class="theme-icon" aria-hidden="true">${isDark ? "☀" : "☾"}</span><span>${isDark ? "Light mode" : "Dark mode"}</span>`;
+				if (persist) {
+					try { localStorage.setItem("what-am-i-theme", theme); } catch {}
+				}
+			};
+			themeButton.addEventListener("click", () => setTheme(currentTheme === "dark" ? "light" : "dark"));
+			setTheme(currentTheme, false);
+			const escapeHtml = (text) => text.replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
+			const shuffle = (items) => {
+				const copy = [...items];
+				for (let index = copy.length - 1; index > 0; index--) {
+					const swap = Math.floor(Math.random() * (index + 1));
+					[copy[index], copy[swap]] = [copy[swap], copy[index]];
+				}
+				return copy;
+			};
+			const showHome = () => {
+				run = null;
+				app.innerHTML = `
+					<section class="screen home" aria-labelledby="home-title">
+						<div class="home-copy">
+							<span class="eyebrow">A personality quiz with extra whimsy</span>
+							<h1 id="home-title">What am <span>I?</span></h1>
+							<p class="intro">A little animal, a very specific snack, a secret superpower… answer a few curious questions and meet the many things you might be.</p>
+							<button class="primary" id="start" type="button">Let's find out <span class="arrow" aria-hidden="true">→</span></button>
+							<p class="small-note">15 shuffled questions · 48 possible selves · no wrong answers</p>
+						</div>
+						<div class="playground" aria-label="A sample result: moonlit otter">
+							<span class="spark" aria-hidden="true">✳</span><span class="spark-two" aria-hidden="true">✳</span>
+							<div class="orbit" aria-hidden="true"></div>
+							<article class="sample"><span class="sample-kicker">A possible you</span><span class="sample-emoji" aria-hidden="true">🦦</span><h2>Moonlit otter</h2><p>Curious, cozy, and always up for one more little adventure.</p></article>
+						</div>
+					</section>`;
+				document.querySelector("#start").addEventListener("click", startQuiz);
+			};
+			const startQuiz = () => {
+				const order = shuffle(questions.map((_, index) => index)).slice(0, QUIZ_QUESTION_COUNT);
+				run = {
+					order,
+					answerOrders: order.map((questionIndex) => shuffle(questions[questionIndex][1].map((_, index) => index))),
+					answers: Array(QUIZ_QUESTION_COUNT).fill(null),
+					current: 0
+				};
+				renderQuestion();
+			};
+			const renderQuestion = () => {
+				const position = run.current;
+				const question = questions[run.order[position]];
+				const answerOrder = run.answerOrders[position];
+				const chosen = run.answers[position];
+				app.innerHTML = `
+					<section class="screen quiz-shell" aria-labelledby="question-title">
+						<div class="quiz-top"><span class="question-count">Question <strong>${position + 1}</strong> of ${QUIZ_QUESTION_COUNT}</span><button class="text-button" id="quit" type="button">Back to home ↗</button></div>
+						<div class="progress-track" role="progressbar" aria-label="Quiz progress" aria-valuemin="0" aria-valuemax="${QUIZ_QUESTION_COUNT}" aria-valuenow="${position}"><div class="progress-fill" style="width:${(position / QUIZ_QUESTION_COUNT) * 100}%"></div></div>
+						<div class="question-card">
+							<span class="eyebrow">Go with your first hunch</span>
+							<h1 class="question-title" id="question-title">${escapeHtml(question[0])}</h1>
+							<div class="answers" role="group" aria-label="Choose an answer">${answerOrder.map((choiceIndex, displayIndex) => { const [label] = question[1][choiceIndex]; return `<button class="answer${chosen === choiceIndex ? " selected" : ""}" type="button" data-answer="${choiceIndex}" aria-pressed="${chosen === choiceIndex}"><span class="answer-key" aria-hidden="true">${displayIndex + 1}</span><span>${escapeHtml(label)}</span></button>`; }).join("")}</div>
+							<div class="question-actions"><button class="text-button" id="previous" type="button" ${position === 0 ? "disabled aria-disabled=\"true\"" : ""}>← Previous</button><span class="keyboard-hint">Tip: keys 1–4 work too</span><button class="primary" id="next" type="button" ${chosen === null ? "disabled" : ""}>${position === QUIZ_QUESTION_COUNT - 1 ? "See my result" : "Continue"}<span class="arrow" aria-hidden="true">→</span></button></div>
+						</div>
+					</section>`;
+				document.querySelector("#quit").addEventListener("click", showHome);
+				document.querySelector("#previous").addEventListener("click", () => { if (run.current > 0) { run.current--; renderQuestion(); } });
+				document.querySelectorAll("[data-answer]").forEach((button) => button.addEventListener("click", () => {
+					run.answers[position] = Number(button.dataset.answer);
+					document.querySelectorAll("[data-answer]").forEach((option) => {
+						const selected = option === button;
+						option.classList.toggle("selected", selected);
+						option.setAttribute("aria-pressed", String(selected));
+					});
+					document.querySelector("#next").disabled = false;
+				}));
+				document.querySelector("#next").addEventListener("click", () => {
+					if (run.answers[position] === null) return;
+					if (position === QUIZ_QUESTION_COUNT - 1) showResult();
+					else { run.current++; renderQuestion(); }
+				});
+			};
+			const scoreOutcomes = () => {
+				const totals = Object.fromEntries(traits.map((trait) => [trait, 0]));
+				const opportunities = Object.fromEntries(traits.map((trait) => [trait, 0]));
+				run.order.forEach((questionIndex, position) => {
+					const choices = questions[questionIndex][1];
+					const available = new Set(choices.flatMap((choice) => choice.slice(1)));
+					available.forEach((trait) => { opportunities[trait]++; });
+					const selectedTraits = choices[run.answers[position]].slice(1);
+					selectedTraits.forEach((trait) => { totals[trait]++; });
+				});
+				const observed = Object.fromEntries(traits.map((trait) => [trait, (totals[trait] + 0.65) / (opportunities[trait] + 1.3)]));
+				const ranked = outcomes.map((outcome, index) => {
+					const profile = [...outcome[4]].map((value) => 0.12 + Number(value) * 0.08);
+					let traitError = 0;
+					let traitWeight = 0;
+					traits.forEach((trait, traitIndex) => {
+						const reliability = opportunities[trait] / (opportunities[trait] + 3);
+						const weight = 0.55 + reliability;
+						traitError += weight * (observed[trait] - profile[traitIndex]) ** 2;
+						traitWeight += weight;
+					});
+					let answerLoss = 0;
+					run.order.forEach((questionIndex, position) => {
+						const choices = questions[questionIndex][1];
+						const utilities = choices.map((choice) => (profile[traits.indexOf(choice[1])] + profile[traits.indexOf(choice[2])]) / 2);
+						const probability = utilities[run.answers[position]] / utilities.reduce((sum, value) => sum + value, 0);
+						answerLoss -= Math.log(probability);
+					});
+					  const patternFit = answerLoss / (run.order.length * Math.log(4));
+					const fit = (traitError / traitWeight) * 0.55 + patternFit * 0.45;
+					return { outcome, index, fit, observed };
+				}).sort((left, right) => left.fit - right.fit || left.index - right.index);
+				return ranked[0];
+			};
+			const showResult = () => {
+				const { outcome, observed } = scoreOutcomes();
+				const [name, emoji, category, description] = outcome;
+				const sortedTraits = [...traits].sort((left, right) => observed[right] - observed[left]).slice(0, 4);
+				app.innerHTML = `
+					<section class="screen result-wrap" aria-labelledby="result-title">
+						<div class="result-heading"><span class="eyebrow">The universe has a hunch</span><h1 id="result-title">You might be…</h1></div>
+						<article class="result-card">
+							<div class="result-art" aria-hidden="true"><span class="result-emoji">${emoji}</span></div>
+							<div class="result-copy"><span class="result-type">Your what-am-I type · ${escapeHtml(category)}</span><h2 class="result-name">${escapeHtml(name)}</h2><p class="result-description">${escapeHtml(description)}</p>
+								<div class="traits" aria-label="Your strongest traits">${sortedTraits.map((trait) => `<div class="trait"><span class="trait-label">${trait[0].toUpperCase() + trait.slice(1)}</span><div class="trait-track"><div class="trait-fill" style="width:${Math.round(observed[trait] * 100)}%"></div></div><span class="trait-value">${Math.round(observed[trait] * 100)}%</span></div>`).join("")}</div>
+							</div>
+						</article>
+						<div class="result-footer"><button class="secondary" id="home-again" type="button">← Back to the homescreen</button></div>
+					</section>`;
+				document.querySelector("#home-again").addEventListener("click", showHome);
+			};
+			document.addEventListener("keydown", (event) => {
+				if (!run || !document.querySelector("#question-title")) return;
+				if (["1", "2", "3", "4"].includes(event.key)) document.querySelectorAll("[data-answer]")[Number(event.key) - 1]?.click();
+				if (event.key === "Enter" && run.answers[run.current] !== null) document.querySelector("#next")?.click();
+			});
+			document.querySelector(".brand").addEventListener("click", (event) => { event.preventDefault(); showHome(); });
+			showHome();
+		})();
+	</script>
+</body>
+</html>
