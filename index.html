@@ -245,99 +245,133 @@
 	</div>
 	<script>
 		(() => {
-			const traits = ["wonder", "kindness", "nerve", "calm", "spark", "freedom", "focus", "mischief"];
-			const QUIZ_QUESTION_COUNT = 15;
-			const questions = [
-				["A free afternoon appears out of nowhere. You…", [["Follow a tiny curiosity down a rabbit hole", "wonder", "focus"], ["Gather your favorite people", "kindness", "spark"], ["Go somewhere you have never been", "nerve", "freedom"], ["Make a snack and let the day happen", "calm", "mischief"]]],
-				["A friend says, ‘I have a strange idea.’ Your first thought?", [["Tell me every detail", "wonder", "spark"], ["I'm in. What's the plan?", "nerve", "freedom"], ["Does it need snacks?", "kindness", "mischief"], ["Let's make it work, gently", "calm", "focus"]]],
-				["Pick a little treat for a long day.", [["A new book or tiny fact", "wonder", "focus"], ["A long, unhurried chat", "kindness", "calm"], ["Something fizzy and unexpected", "spark", "mischief"], ["A walk with no particular plan", "nerve", "freedom"]]],
-				["When plans go a bit sideways, you tend to…", [["Find the interesting part", "wonder", "calm"], ["Keep everyone feeling okay", "kindness", "focus"], ["Make an entirely new plan", "nerve", "spark"], ["Declare it an adventure", "freedom", "mischief"]]],
-				["Your ideal imaginary home has…", [["A secret room full of odd things", "wonder", "mischief"], ["A big table with extra chairs", "kindness", "spark"], ["A door that opens somewhere new", "nerve", "freedom"], ["A sunny window and a soft blanket", "calm", "focus"]]],
-				["Someone gives you a mysterious little key. You…", [["Try it on every door", "wonder", "nerve"], ["Ask who it belongs to", "kindness", "focus"], ["Keep it for a rainy-day quest", "freedom", "mischief"], ["Put it somewhere safe, then wonder", "calm", "spark"]]],
-				["At a party, where do you end up?", [["In a surprisingly deep conversation", "wonder", "kindness"], ["Starting a very silly game", "spark", "mischief"], ["On the porch looking at the sky", "calm", "freedom"], ["Getting to know someone who arrived alone", "nerve", "focus"]]],
-				["Your brain at bedtime is mostly…", [["One more question, actually", "wonder", "spark"], ["Replaying a kind moment", "kindness", "calm"], ["Planning tomorrow's little mission", "nerve", "focus"], ["A parade of unrelated nonsense", "freedom", "mischief"]]],
-				["Choose a weather forecast for your mood.", [["Bright clouds with secrets inside", "wonder", "calm"], ["Warm sun after a good talk", "kindness", "spark"], ["Wind that might take you places", "nerve", "freedom"], ["A brief, dramatic sprinkle", "focus", "mischief"]]],
-				["You find a creature in need of help. You…", [["Figure out what it needs", "wonder", "focus"], ["Make it feel safe first", "kindness", "calm"], ["Once it's safe, invite it on a little adventure", "nerve", "spark"], ["Try to cheer it up with a very silly name", "freedom", "mischief"]]],
-				["Which compliment would secretly make your week?", [["You notice the best little things", "wonder", "kindness"], ["You make hard things feel possible", "nerve", "focus"], ["You bring such a good kind of chaos", "spark", "mischief"], ["You make people feel at home", "calm", "freedom"]]],
-				["A blank notebook is waiting. The first page gets…", [["A question you can't stop thinking about", "wonder", "focus"], ["A note to someone you love", "kindness", "calm"], ["A map to an imaginary place", "nerve", "freedom"], ["A doodle with googly eyes", "spark", "mischief"]]],
-				["Choose your very unofficial superpower.", [["Understand what plants are thinking", "wonder", "calm"], ["Make anyone feel included", "kindness", "spark"], ["Teleport to wherever the story is", "nerve", "freedom"], ["Make boring things a little ridiculous", "focus", "mischief"]]],
-				["When you really care about something, you…", [["Learn everything you can", "wonder", "focus"], ["Show up, again and again", "kindness", "calm"], ["Say so, even if your voice wobbles", "nerve", "spark"], ["Protect its right to be weird", "freedom", "mischief"]]],
-				["You have a whole day with no obligations. First move?", [["Wander through a museum or market", "wonder", "freedom"], ["Make a cozy meal for people", "kindness", "focus"], ["Sign up for the thing that scares you", "nerve", "spark"], ["Stay in pajamas and improvise", "calm", "mischief"]]],
-				["Pick the role you drift into on a group project.", [["The one with the clever connection", "wonder", "spark"], ["The one checking everyone is okay", "kindness", "calm"], ["The one who gets it started", "nerve", "focus"], ["The one who keeps it fun", "freedom", "mischief"]]],
-				["What is your relationship with rules?", [["I want to know why they exist", "wonder", "focus"], ["Good ones help everyone feel safe", "kindness", "calm"], ["I'll bend one if it blocks a good idea", "nerve", "freedom"], ["I have several harmless loopholes", "spark", "mischief"]]],
-				["A perfect little sound is…", [["Rain ticking on a window", "wonder", "calm"], ["Familiar laughter from another room", "kindness", "spark"], ["Footsteps headed somewhere new", "nerve", "freedom"], ["A squeaky toy at the wrong moment", "focus", "mischief"]]],
-				["How do you pick a favorite thing?", [["It has a story I want to uncover", "wonder", "focus"], ["It reminds me of someone", "kindness", "calm"], ["It makes me feel a bit braver", "nerve", "spark"], ["It is odd, and that is enough", "freedom", "mischief"]]],
-				["You get to add a new holiday. It celebrates…", [["Asking wonderfully pointless questions", "wonder", "mischief"], ["People who quietly show up", "kindness", "focus"], ["Trying something for the first time", "nerve", "freedom"], ["Doing absolutely nothing together", "calm", "spark"]]],
-				["Your ideal adventure has a little bit of…", [["A puzzle nobody asked you to solve", "wonder", "focus"], ["A companion who gets your jokes", "kindness", "mischief"], ["A moment where you surprise yourself", "nerve", "spark"], ["A scenic route and nowhere to be", "calm", "freedom"]]],
-				["When someone new joins the room, you…", [["Wonder what brought them here", "wonder", "focus"], ["Make room beside you", "kindness", "calm"], ["Introduce yourself before you overthink it", "nerve", "spark"], ["Offer them the inside joke's backstory", "freedom", "mischief"]]],
-				["Choose your preferred kind of magic.", [["Find hidden doors in familiar places", "wonder", "freedom"], ["Mend a bad day with one small gesture", "kindness", "calm"], ["Borrow courage from your future self", "nerve", "focus"], ["Make the moon pull a funny face", "spark", "mischief"]]],
-				["A small problem lands in your lap. You…", [["Look for the detail everyone missed", "wonder", "focus"], ["Ask who needs a hand", "kindness", "spark"], ["Take the first useful step", "nerve", "calm"], ["Try a completely sideways solution", "freedom", "mischief"]]],
-				["What's the best souvenir from a day out?", [["A new fact to tell someone", "wonder", "focus"], ["A photo with your favorite people", "kindness", "spark"], ["A story that starts with ‘so, anyway…’", "nerve", "mischief"], ["A quiet memory that's just yours", "calm", "freedom"]]],
-				["If your energy were a tiny shop, it would sell…", [["Curiosities and pocket-sized maps", "wonder", "freedom"], ["Tea, postcards, and spare time", "kindness", "calm"], ["Confetti and first-day jitters", "nerve", "spark"], ["Practical things with silly names", "focus", "mischief"]]],
-				["How do you feel about being the center of attention?", [["Only if I can tell a good story", "wonder", "spark"], ["I'd rather shine a light on someone else", "kindness", "calm"], ["A little nerve makes it interesting", "nerve", "freedom"], ["I can commit to a very dumb bit", "focus", "mischief"]]],
-				["Pick a tiny goal for the next month.", [["Learn something oddly specific", "wonder", "focus"], ["Be more deliberate about checking in", "kindness", "calm"], ["Do one thing before I'm fully ready", "nerve", "spark"], ["Leave more room for delightful detours", "freedom", "mischief"]]],
-				["What do you do with an awkward silence?", [["Ask a question nobody expected", "wonder", "spark"], ["Let it be comfortable", "kindness", "calm"], ["Say the honest thing", "nerve", "focus"], ["Make an extremely specific sound effect", "freedom", "mischief"]]],
-				["Pick a made-up award you might win.", [["Most Likely to Notice the Moon", "wonder", "calm"], ["Best Emergency Pep Talk", "kindness", "spark"], ["First to Volunteer for the Weird Thing", "nerve", "freedom"], ["Most Creative Use of a Snack", "focus", "mischief"]]],
-				["Your favorite kind of surprise is…", [["A clue that makes everything click", "wonder", "focus"], ["Someone remembered a small detail", "kindness", "calm"], ["A chance to do the bold thing", "nerve", "spark"], ["A ridiculous gift with a backstory", "freedom", "mischief"]]],
-				["Choose your unofficial life motto.", [["There is probably more to the story", "wonder", "freedom"], ["Be gentle; everyone is figuring it out", "kindness", "calm"], ["Nervous counts as going anyway", "nerve", "focus"], ["A little nonsense is good for you", "spark", "mischief"]]],
-				["In a new place, your eyes go first to…", [["The tiny details and odd signs", "wonder", "focus"], ["Where everyone seems comfortable", "kindness", "calm"], ["The road or doorway out there", "nerve", "freedom"], ["Anything that could become a joke", "spark", "mischief"]]],
-				["What kind of story do you want to live in?", [["A mystery with a kind answer", "wonder", "kindness"], ["A found-family story with snacks", "calm", "spark"], ["A quest with a very brave middle", "nerve", "focus"], ["A comedy with improbable detours", "freedom", "mischief"]]],
-				["A day feels like yours when…", [["You learned or noticed something new", "wonder", "focus"], ["Somebody felt a little less alone", "kindness", "calm"], ["You did a thing that took nerve", "nerve", "freedom"], ["You laughed at something absurd", "spark", "mischief"]]],
-				["Pick your favorite kind of mess.", [["A desk covered in open books", "wonder", "focus"], ["A kitchen after everyone ate", "kindness", "spark"], ["A bag packed for an impulsive trip", "nerve", "freedom"], ["A craft project with googly eyes", "calm", "mischief"]]],
-				["When you don't know what to do next, you…", [["Follow the question that feels alive", "wonder", "nerve"], ["Talk it through with someone safe", "kindness", "focus"], ["Take one small, real step", "calm", "spark"], ["Wait for a new option to wander in", "freedom", "mischief"]]],
-				["Which tiny victory feels most satisfying?", [["Finally understanding a tricky thing", "wonder", "focus"], ["Making someone feel genuinely seen", "kindness", "calm"], ["Doing the thing you almost put off", "nerve", "spark"], ["Getting away with a harmless prank", "freedom", "mischief"]]],
-				["Your personal soundtrack needs…", [["A curious little melody", "wonder", "calm"], ["A chorus everyone can sing", "kindness", "spark"], ["A beat for walking into the unknown", "nerve", "focus"], ["One extremely unexpected kazoo", "freedom", "mischief"]]],
-				["Choose what you would keep in a tiny jar.", [["A question mark from a good day", "wonder", "focus"], ["A note someone wrote for you", "kindness", "calm"], ["A ticket from a brave decision", "nerve", "freedom"], ["A button that looks a bit suspicious", "spark", "mischief"]]],
-				["Someone says ‘trust your gut.’ Yours says…", [["Wait, let's look at this more closely", "wonder", "focus"], ["Check whether everyone's okay", "kindness", "calm"], ["Well, we won't know until we try", "nerve", "spark"], ["It would be funnier the other way", "freedom", "mischief"]]],
-				["Pick a way to make an ordinary Tuesday better.", [["Read one more page about the thing", "wonder", "focus"], ["Send an ‘I thought of you’ message", "kindness", "spark"], ["Take the scenic way home", "nerve", "freedom"], ["Give an object a dramatic backstory", "calm", "mischief"]]],
-				["What would your friends trust you with?", [["Finding the interesting answer", "wonder", "focus"], ["Being there when it matters", "kindness", "calm"], ["Starting something a little daunting", "nerve", "spark"], ["Making a dull moment memorable", "freedom", "mischief"]]],
-				["A little sign points toward ‘elsewhere.’ You…", [["Ask what ‘elsewhere’ means", "wonder", "nerve"], ["Check whether a friend wants to come", "kindness", "freedom"], ["Go see, with sensible shoes", "focus", "spark"], ["Give the sign a thumbs-up first", "calm", "mischief"]]],
-				["Choose a very small thing to be proud of.", [["I stay curious even when I'm tired", "wonder", "calm"], ["I care, and I let it show", "kindness", "spark"], ["I keep going while a bit scared", "nerve", "focus"], ["I make room for being delightfully odd", "freedom", "mischief"]]],
-				["Your perfect ending to an ordinary day?", [["One last thought to take to bed", "wonder", "focus"], ["A goodnight from someone you love", "kindness", "calm"], ["The feeling you made a little progress", "nerve", "spark"], ["A laugh about something deeply silly", "freedom", "mischief"]]],
-				["You stumble on a tiny free library. You…", [["Leave a note recommending a book you love", "wonder", "kindness"], ["Take the book with the strangest title", "wonder", "mischief"], ["Leave a book someone might need", "kindness", "calm"], ["Follow a handwritten map tucked inside a book", "nerve", "freedom"]]],
-				["A paper airplane lands at your feet. You…", [["Check for a message before unfolding it", "wonder", "focus"], ["Fold one back and send it somewhere", "spark", "mischief"], ["Ask around to find its pilot", "kindness", "nerve"], ["See how far it can fly from the roof", "freedom", "nerve"]]],
-				["Pick an unlikely sidekick for your next errand.", [["A very confident pigeon", "nerve", "mischief"], ["A pocket notebook full of clues", "wonder", "focus"], ["A friend who remembers everyone's order", "kindness", "calm"], ["A tiny scooter with one squeaky wheel", "spark", "freedom"]]],
-				["Your ideal museum exhibit is…", [["A room of inventions that almost worked", "wonder", "mischief"], ["A collection of letters between friends", "kindness", "focus"], ["A planetarium with a dramatic narrator", "wonder", "spark"], ["A hands-on maze with no marked exit", "nerve", "freedom"]]],
-				["A neighbor leaves a mysterious parcel at your door. You…", [["Inspect the wrapping for clues", "wonder", "focus"], ["Take it next door and ask if it was meant for you", "kindness", "nerve"], ["Open it carefully, with a snack nearby", "calm", "mischief"], ["Guess what's inside with great confidence", "spark", "mischief"]]],
-				["Choose a very niche talent to master.", [["Remember every path you've ever walked", "wonder", "focus"], ["Make a perfect cup of tea for anyone", "kindness", "calm"], ["Talk to a room full of strangers", "nerve", "spark"], ["Make a convincing sound effect for any object", "freedom", "mischief"]]],
-				["The power goes out during a sleepover. You…", [["Tell a story that gets a little too spooky", "wonder", "mischief"], ["Check on everyone and find the candles", "kindness", "focus"], ["Go look at the stars from outside", "nerve", "freedom"], ["Start a shadow-puppet competition", "spark", "calm"]]],
-				["You get to rename one day of the week. It becomes…", [["Little Question Day", "wonder", "mischief"], ["Bring-a-Friend Day", "kindness", "spark"], ["Try-It-Anyway Day", "nerve", "focus"], ["Take-the-Long-Way Day", "calm", "freedom"]]],
-				["A cloud looks exactly like something. You…", [["Look for other shapes hiding in the clouds", "wonder", "focus"], ["Point it out to whoever is nearby", "kindness", "spark"], ["Decide it is a dragon and make a quest", "nerve", "freedom"], ["Give it a silly name and move on", "calm", "mischief"]]],
-				["At the snack table, you gravitate toward…", [["The homemade thing with a story", "wonder", "kindness"], ["The odd flavor nobody has tried", "nerve", "mischief"], ["Whatever has enough to share", "kindness", "calm"], ["The snack shaped like a tiny hat", "spark", "freedom"]]],
-				["You find a button that says ‘probably fine.’ You…", [["Read the instructions on the back", "wonder", "focus"], ["Ask someone else to press it together", "kindness", "nerve"], ["Press it, but stand somewhere dramatic", "nerve", "spark"], ["Give a tiny speech before pressing it", "calm", "mischief"]]],
-				["What would you put in a time capsule for future you?", [["A question you still haven't answered", "wonder", "focus"], ["A note reminding you who showed up", "kindness", "calm"], ["A ticket from something you were nervous to try", "nerve", "freedom"], ["A drawing of yourself with enormous shoes", "spark", "mischief"]]],
-				["Pick a job for your imaginary tiny town.", [["Keeper of the town's very specific records", "wonder", "focus"], ["Host of the communal soup night", "kindness", "calm"], ["Official tester of secret tunnels", "nerve", "freedom"], ["Minister of Unnecessary Celebrations", "spark", "mischief"]]],
-				["A stranger asks you to settle a very silly debate. You…", [["Ask what the exact rules are", "wonder", "focus"], ["Make sure both sides feel heard", "kindness", "calm"], ["Offer a bold ruling and a rematch", "nerve", "spark"], ["Introduce a third, much sillier option", "freedom", "mischief"]]],
-				["Choose a door for a storybook hallway.", [["The one with a soft light underneath", "wonder", "calm"], ["The one with voices and clinking dishes", "kindness", "spark"], ["The one with muddy footprints leading out", "nerve", "freedom"], ["The tiny door with a suspicious knocker", "focus", "mischief"]]],
-				["Your favorite kind of surprise party is…", [["A party with someone you miss as the guest of honor", "kindness", "calm"], ["A party where nobody knows the theme", "wonder", "mischief"], ["A surprise party in a place you've never been", "nerve", "freedom"], ["A very serious party for a household object", "spark", "mischief"]]],
-				["You are handed a map with one corner missing. You…", [["Try to infer what the missing bit said", "wonder", "focus"], ["Ask who drew it and why", "kindness", "wonder"], ["Head toward the most interesting landmark", "nerve", "freedom"], ["Draw a ridiculous monster in the blank space", "spark", "mischief"]]],
-				["What would your personal parade celebrate?", [["A curious thought that turned out useful", "wonder", "focus"], ["Someone making room for someone else", "kindness", "calm"], ["Doing the scary thing in sensible shoes", "nerve", "spark"], ["Finding a shortcut that is somehow longer", "freedom", "mischief"]]],
-				["A small animal has chosen to follow you. You…", [["Wonder where it thinks it is going", "wonder", "mischief"], ["Find out if it needs help getting home", "kindness", "focus"], ["Offer it a safe place to rest", "kindness", "calm"], ["Let it lead you somewhere unexpected", "nerve", "freedom"]]],
-				["Pick a sound to put in a magical snow globe.", [["The first quiet moment after snowfall", "wonder", "calm"], ["A kitchen full of familiar voices", "kindness", "spark"], ["A train pulling out toward somewhere new", "nerve", "freedom"], ["A tiny, muffled ‘ta-da!’", "focus", "mischief"]]],
-				["Your imaginary island has one unusual landmark…", [["A library built inside a tree", "wonder", "calm"], ["A long table that seats the whole island", "kindness", "focus"], ["A lookout at the very highest point", "nerve", "freedom"], ["A statue of a very surprised potato", "spark", "mischief"]]],
-				["Which tiny inconvenience would you happily fix forever?", [["Labels that explain what they actually mean", "wonder", "focus"], ["Nobody having to eat lunch alone", "kindness", "calm"], ["Every closed path having a useful detour", "nerve", "freedom"], ["All spoons getting one day off per week", "spark", "mischief"]]],
-				["A friend asks you to help pick a new hobby. You suggest…", [["Identifying birds by their extremely specific calls", "wonder", "focus"], ["Cooking something together for neighbors", "kindness", "calm"], ["A beginner class that sounds a little intimidating", "nerve", "spark"], ["Making tiny hats for fruit", "freedom", "mischief"]]],
-				["You discover a staircase that goes down one extra step. You…", [["Count the steps and check again", "wonder", "focus"], ["Tell the caretaker before someone trips", "kindness", "calm"], ["Look underneath for a hidden room", "nerve", "freedom"], ["Name it the staircase's secret bonus step", "spark", "mischief"]]],
-				["Choose a pocket-sized companion for a long train ride.", [["A puzzle with one missing piece", "wonder", "focus"], ["A playlist made by someone you love", "kindness", "calm"], ["A notebook for plans at the next stop", "nerve", "freedom"], ["A tiny toy with an unnecessarily grand name", "spark", "mischief"]]],
-				["A recipe says ‘add a little joy.’ You…", [["Ask how joy is measured", "wonder", "focus"], ["Invite someone over to help cook", "kindness", "calm"], ["Add the ingredient you have never tried", "nerve", "freedom"], ["Make a trumpet noise and add extra sprinkles", "spark", "mischief"]]],
-				["You can keep one kind of place secret and safe. Which?", [["A clearing where the stars are easy to see", "wonder", "calm"], ["A bench where anyone can take a breath", "kindness", "focus"], ["A path that only brave feet have found", "nerve", "freedom"], ["A little room for extremely silly dancing", "spark", "mischief"]]],
-				["Someone gives you a blank badge. What does it say?", [["Ask Me About That Cloud", "wonder", "mischief"], ["You Can Sit With Us", "kindness", "calm"], ["Trying Counts", "nerve", "focus"], ["Officially Here For Snacks", "spark", "freedom"]]],
-				["What would you do with a spare hour in a new city?", [["Browse a shop that seems to sell everything", "wonder", "freedom"], ["Find a cozy spot and people-watch", "calm", "focus"], ["Ask a local for their favorite hidden place", "kindness", "nerve"], ["Follow the sound of an unexpected instrument", "spark", "mischief"]]],
-				["Which imaginary weather warning would you enjoy?", [["High chance of curious questions", "wonder", "spark"], ["Scattered acts of unexpected kindness", "kindness", "calm"], ["Brisk winds carrying you somewhere new", "nerve", "freedom"], ["A brief shower of harmless confetti", "focus", "mischief"]]],
-				["A tiny dragon sneezes glitter near you. You…", [["Study the glitter to see if it is different each time", "wonder", "focus"], ["Make sure the dragon isn't embarrassed", "kindness", "calm"], ["Ask if it wants to practice somewhere exciting", "nerve", "spark"], ["Sneeze glitter back, obviously", "freedom", "mischief"]]],
-				["Pick the most satisfying kind of discovery.", [["A pattern hiding in plain sight", "wonder", "focus"], ["A person who makes you feel understood", "kindness", "calm"], ["A place you didn't know you could reach", "nerve", "freedom"], ["A very good pun on a public sign", "spark", "mischief"]]],
-				["Your imaginary café has one house rule…", [["Questions are always welcome", "wonder", "kindness"], ["Nobody has to order quickly", "kindness", "calm"], ["At least one table is for spontaneous plans", "nerve", "spark"], ["All mugs get to have names", "focus", "mischief"]]],
-				["Which job would you give a friendly ghost?", [["Librarian for books people haven't written yet", "wonder", "focus"], ["Night-shift comfort provider", "kindness", "calm"], ["Guide to the other side of the hill", "nerve", "freedom"], ["Official sheet-polisher and joke tester", "spark", "mischief"]]],
-				["You find a jar labeled ‘open when ready.’ You…", [["Wonder who decided what ready means", "wonder", "focus"], ["Save it for a day you can share", "kindness", "calm"], ["Open it now and handle whatever happens", "nerve", "spark"], ["Give it a tiny pep talk first", "freedom", "mischief"]]],
-				["Choose a color for a thing that doesn't exist yet.", [["The color of a question almost answered", "wonder", "focus"], ["The color of being expected", "kindness", "calm"], ["The color of a brave first step", "nerve", "freedom"], ["The color of a joke you can't explain", "spark", "mischief"]]],
-				["What would you teach a passing comet about Earth?", [["How much there is to wonder about", "wonder", "spark"], ["How people take care of one another", "kindness", "calm"], ["How to pick a destination and go", "nerve", "freedom"], ["Why we give ordinary rocks funny names", "focus", "mischief"]]],
-				["A doorbell rings, but nobody is there. You…", [["Look for a note or clue nearby", "wonder", "focus"], ["Check whether a neighbor needs anything", "kindness", "calm"], ["Look down the street to see who ran off", "nerve", "freedom"], ["Leave a friendly note in case the visitor comes back", "spark", "mischief"]]],
-				["Pick a very small rebellion against a boring day.", [["Take a new route and notice everything", "wonder", "freedom"], ["Bring someone an unexpected treat", "kindness", "spark"], ["Ask the question everyone is avoiding", "nerve", "focus"], ["Wear two different socks on purpose", "calm", "mischief"]]],
-				["Which imaginary award would you put on your shelf?", [["Best Supporting Question", "wonder", "mischief"], ["Most Likely to Make Room", "kindness", "calm"], ["Bravest Debut at a New Thing", "nerve", "focus"], ["Outstanding Achievement in Side Quests", "spark", "freedom"]]],
-				["You can make one everyday object slightly magical. Which?", [["A notebook that remembers good questions", "wonder", "focus"], ["A kettle that knows when someone needs tea", "kindness", "calm"], ["Shoes that find the courage to go", "nerve", "freedom"], ["A spoon that conducts its own fanfare", "spark", "mischief"]]],
-				["At the end of a long walk, what feels best?", [["A view that makes you think", "wonder", "calm"], ["Getting back with everyone together", "kindness", "focus"], ["Realizing you went farther than expected", "nerve", "freedom"], ["Finding a snack you forgot you packed", "spark", "mischief"]]],
-				["A sleepy town asks you to invent one new tradition.", [["Everyone shares one thing they learned", "wonder", "focus"], ["Leave a porch light on for a neighbor", "kindness", "calm"], ["Take the town's oldest path somewhere new", "nerve", "freedom"], ["Give a trophy to the most dramatic vegetable", "spark", "mischief"]]]
+			const visibleTraits = ["wonder", "kindness", "nerve", "calm", "spark", "freedom", "focus", "mischief"];
+			const latentTraits = ["novelty", "comfort", "structure", "sensory"];
+			const traits = [...visibleTraits, ...latentTraits];
+			const QUIZ_QUESTION_COUNT = 20;
+			const traitPairs = [
+				["wonder", "focus", "structure"], ["kindness", "calm", "comfort"], ["nerve", "freedom", "novelty"], ["spark", "mischief", "sensory"],
+				["wonder", "calm", "comfort"], ["kindness", "spark", "sensory"], ["nerve", "focus", "structure"], ["freedom", "mischief", "novelty"],
+				["wonder", "freedom", "novelty"], ["kindness", "focus", "comfort"], ["nerve", "spark", "sensory"], ["calm", "mischief", "comfort"],
+				["wonder", "mischief", "novelty"], ["kindness", "freedom", "novelty"], ["nerve", "calm", "comfort"], ["spark", "focus", "structure"],
+				["wonder", "spark", "sensory"], ["kindness", "mischief", "sensory"], ["nerve", "freedom", "novelty"], ["calm", "focus", "structure"],
+				["wonder", "nerve", "novelty"], ["kindness", "calm", "comfort"], ["spark", "freedom", "sensory"], ["focus", "mischief", "structure"]
 			];
+			const questions = [
+				["If you were choosing a car color, which would you pick?", [["Deep forest green", 4], ["Warm silver", 6], ["Bright marigold", 22], ["Cherry red", 17]]],
+				["Which mug would you reach for first?", [["A speckled ceramic one", 0], ["A wide mug with a soft handle", 1], ["A travel cup with a lid", 2], ["One shaped like a tiny house", 3]]],
+				["Choose a sound for your morning alarm.", [["A few piano notes", 4], ["A familiar radio voice", 5], ["A brisk electronic beat", 6], ["A cartoon sound effect", 7]]],
+				["Which jacket would you wear most often?", [["A light raincoat with roomy pockets", 9], ["A soft cardigan", 1], ["A bright windbreaker", 10], ["A secondhand jacket with a story", 12]]],
+				["What would you most like to see from your window?", [["A tree canopy", 4], ["A lively street corner", 5], ["A long road into the distance", 2], ["Rooftops and chimneys", 23]]],
+				["You have room for one extra thing in your weekend bag. What goes in?", [["A pocket field guide", 0], ["A small tin of favorite snacks", 1], ["A swimsuit, just in case", 8], ["A deck of oddly specific playing cards", 3]]],
+				["Choose something to keep on your desk.", [["A small magnifying glass", 0], ["A photo in a simple frame", 1], ["A paperweight from a trip", 8], ["A toy that makes a ridiculous noise", 3]]],
+				["Which ice cream flavor sounds best today?", [["Pistachio", 4], ["Strawberry", 5], ["Lemon sorbet", 10], ["Chocolate with popping candy", 23]]],
+				["Pick a pair of everyday shoes.", [["Canvas shoes in a muted color", 8], ["Soft slippers", 1], ["Sturdy walking boots", 2], ["Bright sneakers with mismatched laces", 3]]],
+				["Which candle would you light in the evening?", [["Cedar and rain", 4], ["Vanilla and warm bread", 1], ["Citrus and ginger", 10], ["A scent called ‘haunted attic’", 7]]],
+				["Choose a notebook cover.", [["A constellation map", 0], ["Soft blue linen", 1], ["A bright geometric pattern", 10], ["A ridiculous drawing of a fish", 3]]],
+				["Which bicycle would you take for a ride?", [["A classic city bike with a basket", 16], ["A comfortable cruiser", 1], ["A light bike built for hills", 2], ["A tiny folding bike in a loud color", 22]]],
+				["What would you pack for a picnic?", [["Olives, cheese, and crusty bread", 0], ["A big thermos of soup to share", 1], ["Fruit and something fizzy", 10], ["A mystery assortment from the corner shop", 7]]],
+				["Which plant would you put on a windowsill?", [["A tiny cactus with an unusual shape", 0], ["A leafy pothos", 4], ["A pot of bright marigolds", 10], ["A carnivorous plant with a funny name", 3]]],
+				["Choose a lamp for a reading corner.", [["A small adjustable desk lamp", 0], ["A paper lantern", 1], ["A tall arc lamp", 2], ["A mushroom-shaped lamp", 3]]],
+				["Which sofa would you choose for a living room?", [["A neat two-seater in dark green", 19], ["A deep, soft sectional", 1], ["A low modular sofa you can rearrange", 8], ["A yellow velvet sofa", 22]]],
+				["Pick a way to explore a new place.", [["Wander through side streets", 8], ["Take a scenic train ride", 1], ["Rent a bike and cover a lot of ground", 2], ["Follow a parade or street musician", 22]]],
+				["Choose wallpaper for a small room.", [["A subtle botanical print", 4], ["A warm, faded stripe", 19], ["A bold color block", 10], ["Tiny illustrated frogs", 7]]],
+				["What would you put on a playlist for a long drive?", [["Instrumental music", 0], ["Songs everyone knows the words to", 5], ["Fast music with a strong beat", 2], ["A mix of theme songs and oddities", 7]]],
+				["Choose a breakfast for a slow morning.", [["Toast with marmalade", 4], ["Pancakes to put in the middle of the table", 5], ["A savory breakfast wrap", 6], ["Cereal eaten from a mug", 7]]],
+				["Which umbrella would you carry?", [["A compact black one", 19], ["A clear dome umbrella", 16], ["A large sturdy golf umbrella", 2], ["One covered in tiny ducks", 3]]],
+				["Set the temperature for your ideal room.", [["Cool enough for a blanket", 4], ["Warm with a window cracked open", 13], ["A little chilly and energizing", 6], ["Whatever it is outside", 22]]],
+				["Pick a keychain for your keys.", [["A little brass compass", 8], ["A smooth wooden bead", 1], ["A bright enamel lightning bolt", 10], ["A miniature rubber chicken", 23]]],
+				["Which path would you take through a park?", [["The one beside the old trees", 4], ["The path that passes the café", 5], ["The steep path up to the viewpoint", 2], ["The winding path with odd sculptures", 7]]],
+				["Choose a phone case.", [["A clear case that shows the phone", 0], ["A soft case in a warm color", 1], ["A slim case with a wrist strap", 8], ["A case with a pop-out stand shaped like a cat", 3]]],
+				["Which version of a book would you rather own?", [["A well-used paperback", 8], ["A clothbound edition", 1], ["An illustrated hardcover", 16], ["A tiny pocket edition", 22]]],
+				["What would you grow in a small garden?", [["Herbs with labels", 0], ["Tomatoes for summer lunches", 1], ["Sunflowers", 10], ["A pumpkin shaped like a star", 7]]],
+				["Choose a fountain for a town square.", [["A simple stone basin", 4], ["A wide fountain with benches nearby", 1], ["A tall fountain visible from far away", 2], ["A fish that spits water sideways", 3]]],
+				["Which stall would you visit first at a market?", [["Old maps and postcards", 0], ["Fresh bread and preserves", 1], ["Handmade outdoor gear", 2], ["Hand-painted signs and novelty hats", 3]]],
+				["Choose a board game for a rainy afternoon.", [["A clever strategy game", 0], ["A cooperative game", 1], ["A fast game with a timer", 6], ["A game with ridiculous rules", 7]]],
+				["What would you listen to while it rains?", [["Rain on a skylight", 4], ["A familiar voice reading aloud", 9], ["Thunder rolling in the distance", 14], ["Rainstick sounds with a drum beat", 15]]],
+				["Pick an exhibit at a natural history museum.", [["A cabinet of minerals", 0], ["A recreated kitchen from long ago", 1], ["A room about deep-sea exploration", 2], ["A dinosaur wearing a tiny hat", 3]]],
+				["Choose a pastry from a bakery.", [["A flaky almond croissant", 0], ["A warm cinnamon bun to split", 1], ["A lemon tart", 10], ["A pastry shaped like a snail", 7]]],
+				["You are looking at a map. Which route catches your eye?", [["A route through the old quarter", 0], ["A route with plenty of cafés", 1], ["A route over the mountain pass", 2], ["A route marked with a hand-drawn star", 3]]],
+				["Choose a soup for a chilly day.", [["Mushroom barley soup", 4], ["Tomato soup with grilled cheese", 1], ["Spicy lentil soup", 10], ["Whatever is left in the pot", 7]]],
+				["Pick a hat for a day outdoors.", [["A wool beanie", 4], ["A sun hat with a wide brim", 1], ["A cap with a bright logo", 10], ["A hat with little ear flaps", 7]]],
+				["Which view would you choose for a night under the stars?", [["A clear view of the Milky Way", 0], ["A firepit with a few chairs", 1], ["A high ridge above the valley", 2], ["A rooftop with a telescope and snacks", 3]]],
+				["Choose a curtain for a bedroom.", [["Plain linen", 4], ["Soft floral fabric", 1], ["A bright geometric print", 10], ["A curtain with a secret pocket", 7]]],
+				["Pick a place to stay on a short trip.", [["A small guesthouse above a bookshop", 0], ["A cottage with a big kitchen", 1], ["A cabin near a hiking trail", 2], ["A converted train carriage", 3]]],
+				["Which drink would you order at a café?", [["Espresso", 6], ["Chai latte", 1], ["Iced matcha", 8], ["A seasonal special with an unexpected name", 7]]],
+				["Choose a clock for your kitchen.", [["A simple analog clock", 19], ["A sunburst clock", 16], ["A digital timer with big numbers", 6], ["A clock where the hands are tiny spoons", 17]]],
+				["Pick a rug for a reading room.", [["A muted woven runner", 4], ["A thick rug with a soft pile", 1], ["A bold stripe", 10], ["A rug printed like a pond", 7]]],
+				["Choose a pair of headphones.", [["Small wireless earbuds", 8], ["Over-ear headphones with soft cushions", 1], ["Studio headphones with crisp sound", 0], ["Bright headphones with a tiny charm", 3]]],
+				["Which beach would you spend an afternoon on?", [["A rocky cove with tide pools", 0], ["A sandy beach with a snack stand", 1], ["A wide beach with strong waves", 2], ["A beach with colorful beach huts", 3]]],
+				["Choose a picture to hang in the hallway.", [["A detailed botanical print", 0], ["A landscape in soft colors", 4], ["An abstract painting in bold red", 10], ["A map of an imaginary island", 7]]],
+				["Pick a dessert to finish dinner.", [["Poached pears", 4], ["Apple crumble with custard", 1], ["Dark chocolate chili cake", 10], ["A plate of tiny assorted sweets", 7]]],
+				["Which part of a city would you explore first?", [["The old streets and small museums", 0], ["The neighborhood food market", 1], ["The tallest public viewpoint", 2], ["The arcade and its side streets", 3]]],
+				["Choose a lunchbox.", [["A metal bento box", 0], ["A cloth-wrapped box with a thermos", 1], ["A compact box with separate compartments", 6], ["A lunch tin covered in silly stickers", 3]]],
+				["Pick a pen for everyday notes.", [["A fine-tip black pen", 0], ["A smooth blue rollerball", 1], ["A chunky marker in a bright color", 10], ["A pen that clicks in an unusual way", 7]]],
+				["Which photo would you print and keep?", [["A mountain reflected in a lake", 4], ["A crowded dinner table", 5], ["A street you walked down somewhere new", 8], ["A blurry picture that still makes you laugh", 3]]],
+				["Choose a chair for a sunny corner.", [["A wooden rocking chair", 4], ["A cushioned armchair", 1], ["A folding chair you can move outside", 8], ["A bright beanbag", 3]]],
+				["What would you order from a food truck?", [["A bowl of noodles with herbs", 0], ["A toasted sandwich", 1], ["A spicy taco", 10], ["A dessert with a flavor you can't identify", 7]]],
+				["Choose a postcard to send from a trip.", [["A hand-drawn street map", 0], ["A local landscape", 4], ["A photo from the highest point you reached", 2], ["A card with a pun on it", 3]]],
+				["Pick a puzzle for a quiet afternoon.", [["A logic puzzle", 0], ["A large jigsaw to do with others", 1], ["A puzzle box with moving parts", 2], ["A word puzzle full of terrible puns", 3]]],
+				["Which pair of socks would you choose?", [["Plain wool socks", 4], ["Matching pairs in soft colors", 1], ["Bright athletic socks", 10], ["Socks with tiny vegetables on them", 7]]],
+				["Choose something to buy at a bakery besides bread.", [["A seeded cracker", 0], ["A box of cookies to share", 1], ["A spicy cheese twist", 10], ["A small cake with an undecipherable decoration", 7]]],
+				["Pick a fruit for an afternoon snack.", [["A crisp green apple", 0], ["A bowl of berries", 4], ["A tart grapefruit", 10], ["A fruit you've never tried before", 8]]],
+				["Which coat would you take on a windy day?", [["A light waterproof shell", 9], ["A long wool coat", 1], ["A padded jacket with a high collar", 6], ["A bright coat with oversized buttons", 3]]],
+				["Choose a radio station for a long afternoon.", [["A program about the natural world", 0], ["A familiar oldies station", 1], ["A live sports broadcast", 2], ["A station that plays cartoon soundtracks", 7]]],
+				["Pick a scent for a fresh room.", [["Rain on warm pavement", 4], ["Fresh laundry", 1], ["Orange peel", 10], ["Something called ‘space cucumber’", 7]]],
+				["Which shop would you browse without needing anything?", [["A secondhand bookshop", 0], ["A kitchenware shop", 1], ["An outdoor equipment store", 2], ["A shop full of novelty items", 3]]],
+				["Choose a blanket for an outdoor evening.", [["A light woven throw", 4], ["A large quilt", 1], ["A compact thermal blanket", 2], ["A bright blanket with a strange pattern", 3]]],
+				["Pick a smoothie flavor.", [["Pear and ginger", 0], ["Banana and oat", 1], ["Pineapple and lime", 10], ["Blueberry with something unexpected", 7]]],
+				["Choose a pot for a houseplant.", [["A plain terracotta pot", 4], ["A ceramic pot in a soft glaze", 1], ["A hanging planter", 8], ["A pot shaped like a sleeping animal", 3]]],
+				["Which trail marker would you rather follow?", [["A small painted arrow on a tree", 0], ["A wide, well-kept path", 1], ["A marker toward a ridge", 2], ["A trail with hand-painted animal signs", 3]]],
+				["Choose a way to spend the last hour of daylight.", [["Watch the light change", 4], ["Sit outside with a warm drink", 1], ["Walk until the sun disappears", 2], ["Take photos of oddly shaped shadows", 3]]],
+				["Which backpack would you take for a day trip?", [["A small canvas backpack", 0], ["A roomy bag with a padded back", 1], ["A lightweight hiking pack", 2], ["A bag in a bright pattern", 3]]],
+				["Choose a kind of holiday accommodation.", [["A quiet cabin in the woods", 4], ["A family-run guesthouse", 1], ["A tent at a remote campsite", 2], ["A themed hotel room", 3]]],
+				["Pick a front door for an imaginary house.", [["A dark green door with a brass knocker", 0], ["A wide door with a bench beside it", 1], ["A bright blue door at the top of steps", 2], ["A round door with a tiny window", 3]]],
+				["Choose a scarf for a cold day.", [["A thin patterned scarf", 0], ["A soft oversized scarf", 1], ["A bright wool scarf", 10], ["A scarf with tassels that look like eyebrows", 7]]],
+				["Which room would you visit first in an art gallery?", [["The room of detailed sketches", 0], ["The room of portraits", 1], ["The large modern installation", 2], ["The gallery shop with unusual objects", 3]]],
+				["Choose a topping for baked potatoes.", [["Chives and butter", 0], ["Cheese and beans", 1], ["Chili and lime", 10], ["Crispy onions and a mystery sauce", 7]]],
+				["Pick a label style for jars in a kitchen.", [["Small handwritten labels", 0], ["Simple matching labels", 1], ["Bright color-coded labels", 10], ["Silly names for everything", 7]]],
+				["Which music would you put on while cooking?", [["Quiet jazz", 4], ["A playlist of familiar favorites", 1], ["Upbeat dance music", 10], ["Songs from musicals, sung loudly", 7]]],
+				["Choose a view for a small balcony.", [["A courtyard with old trees", 4], ["A street with cafés and windows", 5], ["A distant view of hills", 2], ["A rooftop full of chimneys", 23]]],
+				["Pick a chair for a train journey.", [["A window seat", 4], ["A seat around a table", 1], ["A forward-facing seat", 2], ["A seat beside the snack trolley", 3]]],
+				["Choose an iced drink on a warm day.", [["Cold brew coffee", 6], ["Iced tea with peach", 1], ["Sparkling water with lime", 8], ["A bright slushie", 3]]],
+				["Which comic strip would you read first?", [["A mystery in four panels", 0], ["A story about neighbors", 1], ["A space adventure", 2], ["A comic about a confused sandwich", 3]]],
+				["Choose a weather forecast for a day off.", [["Cool and misty", 4], ["Mild with patches of sun", 1], ["Clear and windy", 2], ["A short shower followed by a rainbow", 3]]],
+				["Pick a kitchen tile.", [["Small white squares", 19], ["Cream tiles with a handmade finish", 16], ["Deep blue glossy tiles", 2], ["Tiles with tiny painted lemons", 3]]],
+				["Which activity would you try at a community sports day?", [["A precision beanbag toss", 0], ["A three-legged race with a friend", 1], ["A climbing wall", 2], ["A relay race in oversized costumes", 3]]],
+				["Choose a calendar for the new year.", [["A small calendar with moon phases", 0], ["A large family calendar", 1], ["A planner with room for daily goals", 6], ["A calendar of animals in odd poses", 3]]],
+				["Pick a place to sit in a public garden.", [["Near a pond", 4], ["At a table beneath a tree", 1], ["At the top of a small hill", 2], ["Beside unusually shaped flowers", 3]]],
+				["Choose a table at a café.", [["A small table by the window", 0], ["A large table with extra chairs", 1], ["A counter seat facing the street", 2], ["A table with a wobbly leg", 3]]],
+				["Pick a light for a bedside table.", [["A small reading lamp", 0], ["A softly glowing lamp", 1], ["A bright adjustable lamp", 6], ["A lamp that looks like a tiny moon", 3]]],
+				["Which route would you take on an evening walk?", [["A quiet street with old houses", 4], ["A route past familiar shops", 1], ["A longer path beside the river", 2], ["A loop past illuminated signs", 3]]],
+				["Choose something to keep in a kitchen drawer.", [["A small notebook of recipes", 0], ["Extra tea towels", 1], ["A compact multitool", 2], ["Novelty bottle openers", 3]]],
+				["Pick a little weekend ritual.", [["Make coffee and read", 4], ["Cook a familiar meal", 1], ["Take a different route somewhere", 8], ["Try a new snack and rate it dramatically", 7]]],
+				["Which store would you visit in a fictional village?", [["The mapmaker's shop", 0], ["The bakery with tables outside", 1], ["The outdoor outfitter", 2], ["The shop with peculiar souvenirs", 3]]],
+				["Choose a pattern for a set of plates.", [["Fine blue lines", 0], ["Soft green leaves", 4], ["Bold orange shapes", 10], ["Surprised birds", 7]]],
+				["What would you choose for a short ferry ride?", [["Stand by the rail and watch the water", 4], ["Find a seat near the café", 1], ["Go up to the open deck", 2], ["Photograph the seagulls", 3]]],
+				["Pick a topping for oatmeal.", [["Sliced pear and cinnamon", 0], ["Banana and honey", 1], ["Berries and lemon zest", 10], ["Chocolate chips and crushed pretzels", 7]]],
+				["Choose a place to browse on a day out.", [["An old observatory", 0], ["A covered food market", 1], ["A harbor with boats", 2], ["A street full of independent toy shops", 3]]],
+				["Pick a small object for a shelf.", [["A smooth piece of sea glass", 4], ["A framed postcard", 1], ["A small brass telescope", 2], ["A ceramic goose wearing a scarf", 3]]],
+				["Choose a flavor for homemade lemonade.", [["Classic lemon", 19], ["Lemon and mint", 16], ["Lemon and ginger", 10], ["Lemon with blueberry", 7]]],
+				["Which corner of a library would you browse?", [["Travel atlases", 0], ["Cookbooks", 1], ["Outdoor adventure stories", 2], ["Books about unusual hobbies", 3]]],
+				["Pick a place to watch a summer storm from.", [["A covered porch", 4], ["A kitchen window", 1], ["A safe lookout over a field", 2], ["A tent with rain tapping overhead", 3]]],
+				["Choose something to add to a plain sandwich.", [["Cucumber and pepper", 0], ["Cheese and tomato", 1], ["Pickled jalapeños", 10], ["Crisps tucked inside", 7]]],
+				["Which ticket would you keep as a souvenir?", [["A train ticket with its route printed on it", 0], ["A ticket from a local concert", 1], ["A pass for a cable car or ferry", 2], ["A ticket from a tiny amusement park", 3]]],
+				["Choose a sound to hear from an open window.", [["Wind moving through leaves", 4], ["Dishes clinking in a nearby kitchen", 1], ["A train passing in the distance", 2], ["Someone practicing an off-key instrument", 3]]],
+				["Pick a shape for a pendant or charm.", [["A small crescent moon", 0], ["A smooth round stone", 1], ["A sharp-edged star", 2], ["A tiny abstract blob", 3]]],
+				["Which shop window would make you stop?", [["A display of old cameras", 0], ["A window full of cakes", 1], ["Hiking boots and maps", 2], ["A miniature model town", 3]]],
+				["Choose a side dish for dinner.", [["Roasted root vegetables", 4], ["Buttery potatoes", 1], ["A sharp, crunchy salad", 10], ["A mix of whatever is in season", 7]]],
+				["Pick a souvenir from an aquarium.", [["A little book about sea life", 0], ["A postcard of the penguins", 1], ["A model submarine", 2], ["A plush octopus with too many legs", 3]]],
+				["Choose an extra feature for a dream kitchen.", [["A shelf for labeled jars", 0], ["A long table for meals", 1], ["A door that opens to the garden", 8], ["A tiny serving hatch for snacks", 3]]],
+				["Pick a way to mark a page in a book.", [["A folded paper corner", 0], ["A postcard from someone", 1], ["A train ticket", 2], ["A receipt with a doodle", 3]]],
+				["Which neighborhood feature would you like nearby?", [["A small natural history museum", 0], ["A park with benches", 1], ["A station with trains in several directions", 2], ["A shop selling one very specific thing", 3]]],
+				["Choose a topping for a bowl of rice.", [["Sesame and scallions", 0], ["Roasted vegetables", 1], ["Chili oil and lime", 10], ["Crispy seaweed and a soft-boiled egg", 7]]],
+				["Pick a place to sit while waiting for a train.", [["A bench near the timetable", 0], ["A café table by the platform", 1], ["The end of the platform", 2], ["A seat beneath the station clock", 3]]],
+				["Which small phone upgrade would you choose?", [["A better camera zoom", 0], ["A battery that lasts all day", 1], ["A satellite emergency beacon", 2], ["A projector for tiny pictures", 3]]],
+				["Choose a kind of garden gate.", [["A low wooden gate", 4], ["A gate with a welcoming arch", 1], ["A tall iron gate", 2], ["A little gate painted bright purple", 3]]],
+				["Pick an item to bring on a train ride.", [["A puzzle book", 0], ["A thermos of tea", 1], ["A guide to the next stop", 2], ["Snacks to eat in a specific order", 3]]],
+				["Choose a final stop for a day out.", [["A quiet bookshop", 4], ["A busy food hall", 5], ["A lookout just beyond town", 2], ["A tiny museum with an oddly specific theme", 3]]]
+			].map(([prompt, choices]) => [prompt, choices.map(([label, pairIndex]) => [label, ...traitPairs[pairIndex]])]);
 			const outcomes = [
 				["Moonlit otter", "🦦", "animal", "You move through life with playful curiosity and a soft spot for your people. You like finding the hidden fun in ordinary things, then inviting someone along for the discovery.", "45235414"],
 				["Pocket-sized dragon", "🐉", "creature", "A tender heart with a surprisingly brave streak. You protect what matters, collect curious little treasures, and can turn a small spark into an excellent adventure.", "34425323"],
@@ -432,7 +466,7 @@
 							<h1 id="home-title">What am <span>I?</span></h1>
 							<p class="intro">A little animal, a very specific snack, a secret superpower… answer a few curious questions and meet the many things you might be.</p>
 							<button class="primary" id="start" type="button">Let's find out <span class="arrow" aria-hidden="true">→</span></button>
-							<p class="small-note">15 shuffled questions · 48 possible selves · no wrong answers</p>
+							<p class="small-note">20 questions · 48 possible selves · no wrong answers</p>
 						</div>
 						<div class="playground" aria-label="A sample result: moonlit otter">
 							<span class="spark" aria-hidden="true">✳</span><span class="spark-two" aria-hidden="true">✳</span>
@@ -497,7 +531,15 @@
 				});
 				const observed = Object.fromEntries(traits.map((trait) => [trait, (totals[trait] + 0.65) / (opportunities[trait] + 1.3)]));
 				const ranked = outcomes.map((outcome, index) => {
-					const profile = [...outcome[4]].map((value) => 0.12 + Number(value) * 0.08);
+					const coreProfile = [...outcome[4]].map((value) => 0.12 + Number(value) * 0.08);
+					const core = Object.fromEntries(visibleTraits.map((trait, traitIndex) => [trait, coreProfile[traitIndex]]));
+					const profile = [
+						...coreProfile,
+						(core.wonder + core.nerve + core.freedom) / 3,
+						(core.kindness + core.calm) / 2,
+						(core.focus + core.calm) / 2,
+						(core.wonder + core.spark + core.mischief) / 3
+					];
 					let traitError = 0;
 					let traitWeight = 0;
 					traits.forEach((trait, traitIndex) => {
@@ -509,7 +551,7 @@
 					let answerLoss = 0;
 					run.order.forEach((questionIndex, position) => {
 						const choices = questions[questionIndex][1];
-						const utilities = choices.map((choice) => (profile[traits.indexOf(choice[1])] + profile[traits.indexOf(choice[2])]) / 2);
+						const utilities = choices.map((choice) => choice.slice(1).reduce((sum, trait) => sum + profile[traits.indexOf(trait)], 0) / (choice.length - 1));
 						const probability = utilities[run.answers[position]] / utilities.reduce((sum, value) => sum + value, 0);
 						answerLoss -= Math.log(probability);
 					});
@@ -522,7 +564,7 @@
 			const showResult = () => {
 				const { outcome, observed } = scoreOutcomes();
 				const [name, emoji, category, description] = outcome;
-				const sortedTraits = [...traits].sort((left, right) => observed[right] - observed[left]).slice(0, 4);
+				const sortedTraits = [...visibleTraits].sort((left, right) => observed[right] - observed[left]).slice(0, 4);
 				app.innerHTML = `
 					<section class="screen result-wrap" aria-labelledby="result-title">
 						<div class="result-heading"><span class="eyebrow">The universe has a hunch</span><h1 id="result-title">You might be…</h1></div>
